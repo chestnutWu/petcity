@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style type="text/css">
+      html, body { height: 100%; margin: 0; padding: 0; }
+      #map { height: 100%; }
+    </style>
+    <title>地址轉換經緯度</title>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  </head>
+  <body>
+    <div id="info"></div>
+    <script type="text/javascript">
+    //var mapAPIKey = 'AIzaSyDfdp5C728l4qIUCGOTFXIHP-NvdtJHcTQ';
+    var geocoder;
+    var index = 639;
+    var timer;
+    var delay = 1000;
+    
+    function init(){
+        $.getJSON("veterinarian_data.json",function(data){
+            geocoder = new google.maps.Geocoder();
+            timer = setInterval(function(){codeAddress(data[index]);},delay);
+        });
+    }
+        
+    function codeAddress(address){
+        if(typeof(address)!= 'undefined'){
+            geocoder.geocode({'address':address.機構地址},function(results,status){
+                if(status == 'OK'){
+                    var information='';
+                    var latitude = results[0].geometry.location.lat();
+                    var longitude = results[0].geometry.location.lng();
+                    var place = address.機構地址;
+                    
+                    information += '<p>'+"第"+index+"筆:"+place+results[0].geometry.location+'</p>';
+                    $('#info').append(information);
+                    sendToDataBase(index+1,latitude,longitude);
+                    index++;
+                }
+                else if(status == 'OVER_QUERY_LIMIT'){
+                    delay += 200;
+                }
+                else{
+                    $('#info').append('Geocode was not successful for the reason :'+status+'<br>');
+                    index ++;
+                }
+            }); 
+        }
+        else{
+             clearInterval(timer);         
+        }
+    }
+        
+    function sendToDataBase(id,lng,lat){
+        $.post('/insertLngLatToDB.php',{id:id,longitude:lng,latitude:lat},function(data,status){
+                if(status == 'success'){
+                    $('#info').append('後端連結成功<br>');
+                    $('#info').append(data);
+                }
+        }).error(errorResponse);
+    }
+        
+    function errorResponse(){
+        $('#info').append('後端連結失敗<br>');
+    }
+        
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfdp5C728l4qIUCGOTFXIHP-NvdtJHcTQ&callback=init"></script>
+  </body>
+</html>

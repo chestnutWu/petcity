@@ -1,0 +1,856 @@
+<!doctype html>
+<html>
+    <head>
+      <title>PetCity寵物推薦</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <link href="https://fonts.googleapis.com/css?family=Fira+Sans:300,300i,400,500,700" rel="stylesheet">
+      <link href="../hover.css" rel="stylesheet">
+      <link rel="Shortcut Icon" type="image/x-icon" href="../mainpageImage/favicon.ico" />
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="https://d3js.org/d3.v4.min.js"></script>
+      <script src="RadarChart.js"></script>
+    </head>
+    
+    <style>
+        
+        body {
+            background-color: lightblue;
+        }
+        
+        header{
+
+          background-image: url("../images/star_background.svg");
+          background-size: cover;
+          background-repeat: no-repeat;
+          width: 100vw;
+          height:120px;
+
+        }
+        
+        #page1{
+          width: 10%;
+          height: 110px;
+          float:left;
+          margin-left: 65px;
+          margin-top: 5px;
+        }
+
+        #page2{
+          width: 10%;
+          height: 100px;
+          float:left;
+          margin-left: 120px;
+          margin-top: 10px;
+        }
+
+        #page3{
+          width: 10%;
+          height: 100px;
+          float:left;
+          margin-left: 80px;
+          margin-top: 10px;
+        }
+
+        #page4{
+          width: 10%;
+          height: 100px;
+          float:left;
+          margin-left: 80px;
+          margin-top: 10px;
+        }
+
+        #page5{
+          width: 10%;
+          height: 100px;
+          float:left;
+          margin-left: 80px;
+          margin-top: 10px;
+        }
+
+        #page6{
+          width: 10%;
+          height: 100px;
+          float:left;
+          margin-left: 80px;
+          margin-top: 10px;
+        }
+        
+        
+            
+        input{
+            float:left;
+        }
+        
+        div.container {
+            width: 100%;
+            height: 20%;
+        }
+        
+        #Box1,
+        #Box2,
+        #Box3,
+        #Box4,
+        #Box5,
+        #Box6,
+        #Box7,
+        #Box8,
+        #Box9,
+        #Box10,
+        #Box11,
+        #Box12,
+        #Box13,
+        #Box14,
+        #Box15,
+        #Box16 {
+            width:10%;
+            height:80px;
+            padding:10px;
+            float:left;
+            margin-right:10px;
+            margin-bottom:10px;
+        }
+        
+        #dogPlateBox{
+            width:70%;
+            height:200px;
+            padding:10px;
+            margin-right:10px;
+            margin-bottom:10px; 
+        }
+        
+        #dogplate{
+            width:70%;
+            height:400px;
+            padding:10px;
+            margin-right:10px;
+            background-image:url(images/狗盆.png);
+            background-repeat: no-repeat;
+            background-size: contain;
+            float: left;
+            background-position:center;
+            
+        }
+        
+        nav {
+            padding: 1em;
+            clear: left;
+            text-align: center;
+        }
+        
+        #Imgdiary {
+            position: absolute;
+            z-index: 0;
+            margin: -100px 0px 0px -400px;
+        }
+        
+        .diary {
+            margin: auto;
+            margin-top: 50px;
+        }
+        
+        #Img1,
+        #Img2,
+        #Img3,
+        #Img4,
+        #Img5,
+        #Img6,
+        #Img7,
+        #Img8,
+        #Img9,
+        #Img10,
+        #Img11,
+        #Img12,
+        #Img13,
+        #Img14,
+        #Img15,
+        #Img16 {
+            height : 80px;
+            width : 120px;
+            cursor: pointer;
+        }
+        
+        
+        #div_1,
+        #div_2,
+        #div_3,
+        #div_4,
+        #div_5,
+        #div_6,
+        #div_7,
+        #div_8,
+        #div_9,
+        #div_10,
+        #div_11,
+        #div_12,
+        #div_13,
+        #div_14,
+        #div_15,
+        #div_16 {
+            height : 500px;
+            width : 900px;
+            padding-top : 200px;
+            padding-left : 200px;
+            padding-right : 200px;
+            background-image: url(images/狗屋.png);
+            background-size: contain;
+            background-repeat: no-repeat;
+            float:left;
+            font-family:Microsoft JhengHei;
+        }
+        
+        #questionPage{
+            height: 100vh;
+            width: 100wv;
+            background-image: url(images/QuestionsPageBackground.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        #QandHusky{
+            height : 500px;
+            width : 500px;
+            float:left;
+        }
+        
+        #buttons{
+            float:left;
+            width : 99%;
+            height : 100;
+        }
+        
+        #resultPage{
+            background-image: url(images/ResultPageBackground.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            padding:3%;
+            height: 100vh;
+            
+        }
+        
+        #recommendBoard{
+            float:left;
+            width: 25%;
+            margin-left: 50px;
+            padding: 10px;
+            background-image: url(images/RecommendBoard.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        
+        #resultBoard{
+            height:450px;
+            width: 550px;
+            padding:50px;
+            float:left;
+            background-image: url(images/bubble2.png);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        
+        #bubble1{
+             
+            float:left;
+            padding: 60px;
+            background-image: url(images/bubble1.png);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        
+    </style>
+    
+    <style>
+
+        .axis {
+            font: 15px sans-serif;
+        }
+        .axis path,
+        .axis line {
+          fill: none;
+          stroke: #D4D8DA;
+          stroke-width: 2px;
+          shape-rendering: crispEdges;
+        }
+        #chart {
+/*            margin-left: -150px;*/
+
+        }
+
+          .toolTip {
+          pointer-events: none;
+          position: absolute;
+          display: none;
+          min-width: 50px;
+          height: auto;
+          background: none repeat scroll 0 0 #ffffff;
+          padding: 9px 14px 6px 14px;
+          border-radius: 2px;
+          text-align: center;
+          line-height: 1.3;
+          color: #5B6770;
+          box-shadow: 0px 3px 9px rgba(0, 0, 0, .15);
+        }
+        .toolTip:after {
+          content: "";
+          width: 0;
+          height: 0;
+          border-left: 12px solid transparent;
+          border-right: 12px solid transparent;
+          border-top: 12px solid white;
+          position: absolute;
+          bottom: -10px;
+          left: 50%;
+          margin-left: -12px;
+        }  
+        .toolTip span {
+            font-weight: 500;
+          color: #081F2C;
+        }
+        
+        
+    </style>
+
+    <body>
+        
+          <!---------------------------header-------------------------------->
+            <header id = "header"  >
+                <a href="../index.htm"><img id = "page1" src="../images/logo.svg"></a>
+                <a href="../petMap/veterinary_hospital_page.html"><img id = "page2" src="../images/pet_map.svg" class="hvr-grow" ></a>
+                <a href="../petArticles/index.html"><img id = "page3" src="../images/pet_articles.svg" class="hvr-grow" ></a>
+                <a href="../petRecommend/test.HTML"><img id = "page4" src="../images/pet_recommend.svg" class="hvr-grow" ></a>
+                <a href="../petAdoption/pet_adoption_page.html"><img id = "page5" src="../images/pet_adoption.svg" class="hvr-grow" ></a>
+                <a href="../petRecognition/DogRecWeb.html"><img id = "page6" src="../images/pet_recognition.svg" class="hvr-grow" ></a>
+            </header>
+        
+        
+   
+            <!---------------------------選擇狗骨頭-------------------------------->
+
+        <div id = "ChoiceCondition" class="container">
+            <center><h2 style="font-family:Microsoft JhengHei;">你適合養什麼寵物呢?</h2></center>
+
+            <div id = "Box1" ondrop="Drop(event)" ondragover="AllowDrop(event)">
+                <img id="Img1" class="hvr-grow-rotate" src="images/img1.svg" draggable="true" ondragstart="Drag(event)"></div>
+            <div id = "Box2" ondrop="Drop(event)" ondragover="AllowDrop(event)">
+                <img id="Img2" class="hvr-grow-rotate" src="images/img2.svg" draggable="true" ondragstart="Drag(event)" ></div>
+            <div id = "Box3" ondrop="Drop(event)" ondragover="AllowDrop(event)">
+                <img id="Img3" class="hvr-grow-rotate" src="images/img3.svg" draggable="true" ondragstart="Drag(event)"></div>
+            <div id = "Box4" ondrop="Drop(event)" ondragover="AllowDrop(event)">
+                <img id="Img4" class="hvr-grow-rotate" src="images/img4.svg" draggable="true" ondragstart="Drag(event)"></div>
+            <div id = "Box5" ondrop="Drop(event)" ondragover="AllowDrop(event)">
+                <img id="Img5" class="hvr-grow-rotate" src="images/img5.svg" draggable="true" ondragstart="Drag(event)"></div>
+            <div id = "Box6" ondrop="Drop(event)" ondragover="AllowDrop(event)">
+                <img id="Img6" class="hvr-grow-rotate" src="images/img6.svg" draggable="true" ondragstart="Drag(event)"></div>
+            <div id = "Box7" ondrop="Drop(event)" ondragover="AllowDrop(event)">
+                <img id="Img7" class="hvr-grow-rotate" src="images/img7.svg" draggable="true" ondragstart="Drag(event)"></div>
+            <div id = "Box8" ondrop="Drop(event)" ondragover="AllowDrop(event)">
+                <img id="Img8" class="hvr-grow-rotate" src="images/img8.svg" draggable="true" ondragstart="Drag(event)"></div>
+            <div id = "Box9" ondrop="Drop(event)" ondragover="AllowDrop(event)">
+                <img id="Img9" class="hvr-grow-rotate" src="images/img9.svg" draggable="true" ondragstart="Drag(event)"></div>
+            <div id = "Box10" ondrop="Drop(event)" ondragover="AllowDrop(event)">
+                <img id="Img10" class="hvr-grow-rotate" src="images/img10.svg" draggable="true" ondragstart="Drag(event)"></div>
+            <div id = "Box11" ondrop="Drop(event)" ondragover="AllowDrop(event)">
+                <img id="Img11" class="hvr-grow-rotate" src="images/img11.svg" draggable="true" ondragstart="Drag(event)"></div>
+            <div id = "Box12" ondrop="Drop(event)" ondragover="AllowDrop(event)">
+                <img id="Img12" class="hvr-grow-rotate" src="images/img12.svg" draggable="true" ondragstart="Drag(event)"></div>
+            <div id = "Box13" ondrop="Drop(event)" ondragover="AllowDrop(event)">
+                <img id="Img13" class="hvr-grow-rotate" src="images/img13.svg" draggable="true" ondragstart="Drag(event)"></div>
+            <div id = "Box14" ondrop="Drop(event)" ondragover="AllowDrop(event)">
+                <img id="Img14" class="hvr-grow-rotate" src="images/img14.svg" draggable="true" ondragstart="Drag(event)"></div>
+            <div id = "Box15" ondrop="Drop(event)" ondragover="AllowDrop(event)">
+                <img id="Img15" class="hvr-grow-rotate" src="images/img15.svg" draggable="true" ondragstart="Drag(event)"></div>
+            <div id = "Box16" ondrop="Drop(event)" ondragover="AllowDrop(event)">
+                <img id="Img16" class="hvr-grow-rotate" src="images/img16.svg" draggable="true" ondragstart="Drag(event)"></div>
+            <div style="clear:both"></div>
+            
+                <center><p style="font-family:Microsoft JhengHei;">Tips : 選擇你在意的項目 將狗骨頭拖移到狗盆中<p></center>
+                <div id="dogplate">
+                    <center><div id = "dogPlateBox" ondrop="Drop(event)" ondragover="AllowDrop(event)"></div></center>
+                </div>
+                <img class="hvr-pulse-grow" src="images/%E9%80%B2%E5%85%A5%E6%B8%AC%E9%A9%97.png"  onclick="finishChoise()" style="cursor: pointer;">
+       </div>
+    
+   
+        
+            <!---------------------------------測驗題目----------------------------------->
+       <div id='questionPage' style="display:none"> 
+        <form id = 'questionnaire' class="container-fluid" style="display:none">
+            
+            <div id="progress" class="progress">
+                  <div id="progressBar" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                     完成度 : 0% 
+                    </div>
+            </div>
+            
+            <div id='QandHusky'>
+                
+                    <img id="Q" src="images/Q1.png" height="100" width="100"><br>
+                <center>
+                    <img id="dialog" src="images/degree1.png" height="200" width="300"><br>
+                    <img id="husky" src="images/husky.png" height="200" width="200">
+                </center>
+            </div>
+            
+            <div id = 'div_1' style="display:none;">
+                <br>
+                <h3><strong>希望狗狗如何與你相處呢?</strong></h3>
+                <font size="4">
+                    <input type="radio" name="degree_1" value="100"> 希望牠無時無刻跟我膩在一起 : ><br>
+                    <input type="radio" name="degree_1" value="80"> 總是陪伴在我左右<br>
+                    <input type="radio" name="degree_1" value="60"> 希望牠偶爾可以主動黏我<br>
+                    <input type="radio" name="degree_1" value="40"> 我想理他的時候再理我就好<br>
+                    <input type="radio" name="degree_1" value="20"> 狗狗越獨立越好<br>
+                    <input type="radio" name="degree_1" value="0"> 不要靠近我!!!<br><br>
+                </font>
+            </div>
+            
+            <div id = 'div_2' style="display:none">
+                <br>
+                <h3><strong>希望狗狗如何與你相處呢?</strong></h3>
+                <font size="4">
+                    <input type="radio" name="degree_2" value="100"> 初養就上手!<br>
+                    <input type="radio" name="degree_2" value="80"> 花一兩天，我跟狗狗適應彼此了<br>
+                    <input type="radio" name="degree_2" value="60"> 花了許多時間，我們開始磨合囉~<br>
+                    <input type="radio" name="degree_2" value="40"> 狗狗終於理我，可是不太聽我的話<br>
+                    <input type="radio" name="degree_2" value="20"> 可能一兩個月了都還沒溝通成功<br>
+                    <input type="radio" name="degree_2" value="0"> 嗚嗚我們真的不適合，看來只好放棄 <br><br>
+                </font>
+            </div>
+            
+            <div id = 'div_3' style="display:none;">
+                <br>
+                <h3><strong>介意狗狗掉毛嗎?</strong></h3>
+                <font size="4">
+                    <input type="radio" name="degree_3" value="100"> 完全無所謂阿～毛毛很可愛<br>
+                    <input type="radio" name="degree_3" value="80"> ｏｋ的<br>
+                    <input type="radio" name="degree_3" value="60"> 可以啊～不要毛掉得太誇張就好<br>
+                    <input type="radio" name="degree_3" value="40"> 少量掉毛是可以的<br>
+                    <input type="radio" name="degree_3" value="20"> 不太行　我對毛過敏<br>
+                    <input type="radio" name="degree_3" value="0"> 最好不要在家裡掉半根毛！！ <br><br>
+                </font>
+            </div>
+            
+            <div id = 'div_4' style="display:none">
+                <br>
+                <h3><strong>介意狗狗的味道嗎?</strong></h3>
+                <font size="4">
+                    <input type="radio" name="degree_4" value="100"> 完全不會,我超愛聞<br>
+                    <input type="radio" name="degree_4" value="80"> 味道對我不成問題<br>
+                    <input type="radio" name="degree_4" value="60"> 我可以習慣的<br>
+                    <input type="radio" name="degree_4" value="40"> 可能要花點時間習慣QQ<br>
+                    <input type="radio" name="degree_4" value="20"> 需要電風扇吹散味道<br>
+                    <input type="radio" name="degree_4" value="0"> 可能要將寵物生活空間和居家空間分開 <br><br>
+                </font>
+            </div>
+            
+            <div id = 'div_5' style="display:none">
+                <br>
+                <h3><strong>介意狗狗亂叫嗎?</strong></h3>
+                <font size="4">
+                    <input type="radio" name="degree_5" value="100"> 狗狗的叫聲是天籟，好喜歡哦~ <br>
+                    <input type="radio" name="degree_5" value="80"> 我不怕吵，OK的!<br>
+                    <input type="radio" name="degree_5" value="60"> 不要在我忙的時候吵就好<br>
+                    <input type="radio" name="degree_5" value="40"> 會心情不好，但我不會怎麼樣<br>
+                    <input type="radio" name="degree_5" value="20"> 聽到亂叫可能會生氣訓斥<br>
+                    <input type="radio" name="degree_5" value="0"> 我不能接受任何噪音!! <br><br>
+                </font>
+            </div>
+            
+            <div id = 'div_6' style="display:none">
+                <br>
+                <h3><strong>狗狗需要打理外觀的程度?</strong></h3>
+                <font size="4">
+                    <input type="radio" name="degree_6" value="100"> 願意被打扮成各種浮誇的造型<br>
+                    <input type="radio" name="degree_6" value="80"> 稍微整理就好<br>
+                    <input type="radio" name="degree_6" value="60"> 自然的樣子最棒了<br>
+                    <input type="radio" name="degree_6" value="40"> 被剃毛會不甘願<br>
+                    <input type="radio" name="degree_6" value="20"> 對美容有警覺心 <br>
+                    <input type="radio" name="degree_6" value="0"> 要剃毛就是要命寧死不從 <br><br>
+                </font>
+            </div>
+            
+            <div id = 'div_7' style="display:none">
+                <br>
+                <h3><strong>狗狗對主人關愛的需求程度?</strong></h3>
+                <font size="4">
+                    <input type="radio" name="degree_7" value="100"> 牠不能沒有我，每天都得花很多時間陪牠<br>
+                    <input type="radio" name="degree_7" value="80"> 常常會過來找我<br>
+                    <input type="radio" name="degree_7" value="60"> 想要就來，不想要就不會理我<br>
+                    <input type="radio" name="degree_7" value="40"> 牠其實蠻獨立的，但偶爾也想被我關心<br>
+                    <input type="radio" name="degree_7" value="20"> 牠很獨立，想到才會過來找我<br>
+                    <input type="radio" name="degree_7" value="0"> 不需要關愛，不要過來!! <br><br>
+                </font>
+            </div>
+            
+            <div id = 'div_8' style="display:none">
+                <br>
+                <h3><strong>希望狗狗對小孩的反應如何?</strong></h3>
+                <font size="4">
+                    <input type="radio" name="degree_8" value="100"> 小孩保母，甚至比你更關心小朋友<br>
+                    <input type="radio" name="degree_8" value="80"> 能很快跟小孩打成一片<br>
+                    <input type="radio" name="degree_8" value="60"> 小孩可能很黏，但狗狗不會反抗<br>
+                    <input type="radio" name="degree_8" value="40"> 會主動遠離小孩<br>
+                    <input type="radio" name="degree_8" value="20"> 可能會嚇到小孩<br>
+                    <input type="radio" name="degree_8" value="0"> 可能會發生不好的事...<br>
+                </font>
+            </div>
+                
+            <div id = 'div_9' style="display:none">
+                <br>
+                <h3><strong>希望狗狗對陌生人的反應如何?</strong></h3>
+                <font size="4">
+                    <input type="radio" name="degree_9" value="100"> 根本好奇寶寶，會直接去搭訕<br>
+                    <input type="radio" name="degree_9" value="80"> 遠遠觀察無害後主動親近<br>
+                    <input type="radio" name="degree_9" value="60"> 不會主動搭訕或排斥，需要時間培養關係<br>
+                    <input type="radio" name="degree_9" value="40"> 被搭訕後反應冷淡<br>
+                    <input type="radio" name="degree_9" value="20"> 陌生人接近時，要有被反撲的警覺<br>
+                    <input type="radio" name="degree_9" value="0"> 性情殘暴，並且主動攻擊陌生人 <br><br>
+                </font>
+            </div>
+            
+            <div id = 'div_10' style="display:none">
+                <br>
+                <h3><strong>如果家裡有其他動物好夥伴呢?</strong></h3>
+                <font size="4">
+                    <input type="radio" name="degree_10" value="100"> 親和力爆表，快速和大家打成一片<br>
+                    <input type="radio" name="degree_10" value="80"> 需要花時間適應，但不用太花心思擔心<br>
+                    <input type="radio" name="degree_10" value="60"> 可能需要我從中慢慢引導<br>
+                    <input type="radio" name="degree_10" value="40"> 加入群體後仍是獨行俠<br>
+                    <input type="radio" name="degree_10" value="20"> 會吃醋爭寵<br>
+                    <input type="radio" name="degree_10" value="0"> 會攻擊其他動物 <br><br>
+                </font>
+            </div>
+            
+            
+            <div id = 'div_11' style="display:none">
+                <br>
+                <h3><strong>狗狗對運動的需求量</strong></h3>
+                <font size="4">
+                    <input type="radio" name="degree_11" value="100"> 運動量大，需要天天帶出門散步<br>
+                    <input type="radio" name="degree_11" value="80"> 一周能帶出去踏青一兩次最棒了<br>
+                    <input type="radio" name="degree_11" value="60"> 可以自己在家中玩得很開心<br>
+                    <input type="radio" name="degree_11" value="40"> 容易在跟主人玩遊戲時疲憊<br>
+                    <input type="radio" name="degree_11" value="20"> 連在家都不喜歡運動了<br>
+                    <input type="radio" name="degree_11" value="0"> 根本懶得動 <br><br>
+                </font>
+            </div>
+                
+            <div id = 'div_12' style="display:none">
+                <br>
+                <h3><strong>希望狗狗能夠被訓練到何種程度?</strong></h3>
+                <font size="4">
+                    <input type="radio" name="degree_12" value="100"> 悟性極高的寵物天才<br>
+                    <input type="radio" name="degree_12" value="80"> 聽話的乖寶寶<br>
+                    <input type="radio" name="degree_12" value="60"> 傻傻的孩子需要多點時間和耐心<br>
+                    <input type="radio" name="degree_12" value="40"> 容易分心不好控制<br>
+                    <input type="radio" name="degree_12" value="20"> 做好長期抗戰的準備<br>
+                    <input type="radio" name="degree_12" value="0"> 朽木不可雕也 QQ <br><br>
+                </font>
+            </div>
+            
+            <div id = 'div_13' style="display:none">
+                <br>
+                <h3><strong>狗狗會不會口水流滿臉呢?</strong></h3>
+                <font size="4">
+                    <input type="radio" name="degree_13" value="100"> 放心吧，形象第一，不流口水的<br>
+                    <input type="radio" name="degree_13" value="80"> 只會在看到食物時流口水<br>
+                    <input type="radio" name="degree_13" value="60"> 人家也想保持形象，但一不小心口水就自己跑出來了<br>
+                    <input type="radio" name="degree_13" value="40"> 讓口水自由發展吧，控制它太難了<br>
+                    <input type="radio" name="degree_13" value="20"> 流口水是狗狗的愛好喔<br>
+                    <input type="radio" name="degree_13" value="0">  放心吧，形象第一，口水是我的招牌<br><br>
+                </font>
+            </div>
+                
+            <div id = 'div_14' style="display:none">
+                <br>
+                <h3><strong>狗狗能不能成為時尚的都市人呢?</strong></h3>
+                <font size="4">
+                    <input type="radio" name="degree_14" value="100"> 任何環境對我來說都不是問題<br>
+                    <input type="radio" name="degree_14" value="80"> 只要我逛熟了，都是我的地盤<br>
+                    <input type="radio" name="degree_14" value="60"> 想要適應，但需要一些時間探索<br>
+                    <input type="radio" name="degree_14" value="40"> 主人要花點力氣才能把我騙出門<br>
+                    <input type="radio" name="degree_14" value="20"> 人家就是不想離開家嘛<br>
+                    <input type="radio" name="degree_14" value="0"> 在家中聽到都市的噪音會被嚇到 <br><br>
+                </font>
+            </div>
+            
+            <div id = 'div_15' style="display:none">
+                <br>
+                <h3><strong>狗狗對熱的忍受度?</strong></h3>
+                <font size="4">
+                    <input type="radio" name="degree_15" value="100"> 熱是什麼??<br>
+                    <input type="radio" name="degree_15" value="80"> 有一點點怕熱，喜歡躺涼涼的地方<br>
+                    <input type="radio" name="degree_15" value="60"> 會去探索有風扇和冷氣的空間<br>
+                    <input type="radio" name="degree_15" value="40"> 夏天到了需要帶去剃毛ㄛ<br>
+                    <input type="radio" name="degree_15" value="20"> 除了剃毛，還要做其他降溫措施<br>
+                    <input type="radio" name="degree_15" value="0"> 不能接受超過26度的空間，會中暑... <br><br>
+                </font>
+            </div>
+            
+            <div id = 'div_16' style="display:none">
+                <br>
+                <h3><strong>狗狗對冷的忍受度?</strong></h3>
+                <font size="4">
+                    <input type="radio" name="degree_16" value="100"> 冷是什麼??<br>
+                    <input type="radio" name="degree_16" value="80"> 有點怕冷，喜歡躺暖暖的地方<br>
+                    <input type="radio" name="degree_16" value="60"> 會去探索有陽光的空間<br>
+                    <input type="radio" name="degree_16" value="40"> 冬天需要準備保暖措施<br>
+                    <input type="radio" name="degree_16" value="20"> 連在家中都要開暖氣<br>
+                    <input type="radio" name="degree_16" value="0"> 不能接受低於20度的空間會凍死 <br><br> 
+                </font>
+            </div>
+            
+            <div id='buttons' style='width:90%;height:100'>
+                <br>
+                <center>
+                <img id="retest" class="hvr-grow" src="images/retest.png" height="100" width="150" onclick="javascript:window.location.reload()" style="cursor: pointer;" >
+                <img id="previous" class="hvr-grow" src="images/previous.png" height="100" width="150" onclick="previousQuestion()" style="cursor: pointer;">
+                <img id="next" class="hvr-grow" src="images/next1.png" height="100" width="150" onclick="nextQuestion()" style="cursor: pointer;">
+                <img id="submit" class="hvr-grow" style="display:none; cursor: pointer;" src="images/submit.png" height="100" width="150" onclick="getResult()"><br>
+                </center> 
+            </div>
+            
+        </form>
+       
+        </div>
+        
+        <!-------------------------- 測驗結果 ------------------------------>
+        <div id='resultPage' style="display:none;">
+            <div style='width:100%'>
+                <div id = 'recommendBoard'>
+                    <div id ='recommend' class="list-group"></div>
+                </div>
+                
+                <div style='float:left;width:450px'>
+                    <img style='float:right' src='images/ship.png'>
+                    <div id='resultBoard'>
+                        <center><div id='chart'></div></center>
+                    </div>
+                </div>
+                <div>
+                    <div id='bubble1'><div id='dogImg' class="thumbnail"></div></div>
+                    <img style='float:right; cursor: pointer;' id="retest" class="hvr-pulse-grow" src="images/救生圈.png" height="200" width="200" onclick="javascript:window.location.reload()">
+                    
+                </div>
+            </div>
+            <div style='width:60vw'>
+
+                <img src="images/土狗.png" height="100" width="100" >
+                <br><p>資料來源 : 寵寵微積 ( <a href="https://34c.cc/">https://34c.cc/)</a> </p>
+            </div>
+            
+                
+        </div>
+        
+    </body>
+    
+    <script language="javascript" type="text/javascript">
+        var userChoices = [];
+        var currentQuestion = 0;
+        var data;
+        
+//        $(document).ready(function(){
+//            $("#next").mouseenter(function(){
+//                $("#next").css({"height":"110"});
+//                $("#next").css({"width":"110"});
+//                
+//            });
+//            $("#next").mouseleave(function(){
+//                $("#next").css({"height":"100"});
+//                $("#next").css({"width":"100"});
+//            });
+//            $("#previous").mouseenter(function(){
+//                $("#previous").css({"height":"110"});
+//                $("#previous").css({"width":"110"});
+//                
+//            });
+//            $("#previous").mouseleave(function(){
+//                $("#previous").css({"height":"100"});
+//                $("#previous").css({"width":"100"});
+//            });
+//        });     
+        
+        /*將感興趣的項目加入測驗題目*/
+        function finishChoise(){  
+                var box2Contain = document.getElementById("dogPlateBox").innerHTML;
+                /*遍尋裡面的所有div  抓出id  用字串比對  全部相等再push*/
+                for (var i=1; i<=16; i++) {
+                    var currentItem = "\"Img" + i + "\"";
+                    if (box2Contain.indexOf(currentItem)!=-1){  //檢查有哪些標籤被放入狗盤裡 
+                        userChoices.push(i);   
+                    }
+                }
+                
+                if(userChoices.length==0){
+                    alert("請至少選擇一個項目");
+                    return;
+                }
+            
+                document.getElementById("ChoiceCondition").style.display = "none";
+                initialQuestionnaire();
+        }
+        
+        function initialQuestionnaire(){
+            document.getElementById("questionPage").style.display = "block";
+            document.getElementById("questionnaire").style.display = "block";
+            document.getElementById('div_'+userChoices[currentQuestion]).style.display = "block";
+            document.getElementById('dialog').src = 'images/degree'+userChoices[currentQuestion]+'.png';
+        }
+        
+        function previousQuestion(){   
+            if(currentQuestion > 0){
+                document.getElementById('div_'+userChoices[currentQuestion]).style.display = "none";
+                currentQuestion--;
+                document.getElementById('div_'+userChoices[currentQuestion]).style.display = "block";
+                document.getElementById('Q').src='images/Q'+(currentQuestion+1)+'.png';
+                document.getElementById('dialog').src = 'images/degree'+userChoices[currentQuestion]+'.png';
+                
+            }else /*作答完成*/
+            {
+                alert("沒有上一題囉!");
+            }
+            //upDateProgressBar();
+        }
+        
+        function nextQuestion(){   
+
+            if(document.forms["questionnaire"]["degree_"+userChoices[currentQuestion]].value == '') //檢查是否已作答
+            {
+                alert("您還沒作答哦!");
+                return;
+            }
+            
+            
+            if(currentQuestion < userChoices.length-1){
+                document.getElementById('div_'+userChoices[currentQuestion]).style.display = "none";
+                currentQuestion++;
+                document.getElementById('div_'+userChoices[currentQuestion]).style.display = "block";
+                document.getElementById('Q').src='images/Q'+(currentQuestion+1)+'.png';
+                document.getElementById('dialog').src = 'images/degree'+userChoices[currentQuestion]+'.png';
+            }else /*作答完成*/
+            {
+                 currentQuestion = userChoices.length;
+                 document.getElementById('div_'+userChoices[currentQuestion-1]).style.display = "none";
+                 document.getElementById('next').style.display = "none";
+                 document.getElementById('previous').style.display = "none";
+                 document.getElementById('retest').style.display = "none";
+                 document.getElementById('submit').style.display = "block";
+                 document.getElementById('dialog').src = 'images/finish.png';
+            }
+            upDateProgressBar();
+        }
+        
+        function upDateProgressBar(){
+                var progressBar = document.getElementById('progressBar');
+                var finishPercentage = Math.round((currentQuestion/userChoices.length)*100)
+                
+                if(finishPercentage > parseInt(progressBar.style.width)){   //大於原來的完成度才更新
+                progressBar.style = "width:"+finishPercentage+"%";
+                progressBar.innerHTML = "完成度 : "+finishPercentage+"%"; 
+                }
+        }
+        
+        /*將使用者回答結果傳送到getDogData.php 並取得推薦的品種*/
+        function getResult(){
+               document.getElementById('questionPage').style.display = "none";
+               document.getElementById('resultPage').style.display = "block";
+
+            
+               var userInput = []; 
+               var form = document.getElementById("questionnaire");
+               for(var i=1;i<=16;i++)
+                {
+                        var ans = document.forms["questionnaire"]["degree_"+i].value;
+                        userInput.push(ans);
+                }
+            
+                userInputToSent = JSON.stringify(userInput);
+                xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        data = JSON.parse(this.responseText);
+                        console.log(this.responseText);
+                        showRadarChart(0);
+                        
+                        var recommends = "<img src='images/RecommendText.png'><br>";
+                        for(var i=0;i<10;i++)
+                        {   
+                            crown = "<img src = 'images/皇冠.png' height='25' width = '25'>";
+                            if(data[i]['fitDegree']!=data[0]['fitDegree'])
+                                crown = "";
+                            recommends += ( "<a class='list-group-item' onclick='showRadarChart(" + i + ")'>" +crown+ data[i]['name'] + "<p style='float:right'>推薦程度 : "
+                                           +getRecommendDegree(data[i]['fitDegree'])+"</p></a>" );
+                        }
+                        document.getElementById("recommend").innerHTML = recommends;
+                        
+                    }
+                };
+                xmlhttp.open("post", "analyseDogsData.php", true);
+                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xmlhttp.send("x=" + userInputToSent);
+        }
+        
+        function getRecommendDegree(fitDegree)
+        {
+            if(fitDegree==100)
+                return "★★★★★";
+            else if(fitDegree>=80)
+                return "★★★★✩";
+            else if(fitDegree>=60)
+                return "★★★✩✩";
+            else
+                return "★★✩✩✩";
+        }
+        
+        
+        /*畫雷達圖*/
+        function showRadarChart(thisDog)
+        {
+            //document.getElementById("demo").innerHTML = result;
+            var width = 300,height = 300;
+            
+            var config = {
+                w: width,
+                h: height,
+                maxValue: 100,
+                levels: 5,
+                ExtraWidthX: 300
+            }    
+            
+            RadarChart.draw("#chart", data[thisDog]['values'], config);
+            
+            document.getElementById("dogImg").innerHTML = "<img src='" + data[thisDog]['imgPath'] + "'              title='"+data[thisDog]['detail']+"'                                                 style='height:120px;width:150px;'><p>"+data[thisDog]['name']+"</p>"; 
+            
+            var svg = d3.select('body')
+                .selectAll('svg')
+                .append('svg')
+                .attr("width", width)
+                .attr("height", height);
+            
+        }
+        
+        /*Drag and Drog events*/
+        function AllowDrop(event){
+            event.preventDefault();
+        }
+        function Drag(event){
+            event.dataTransfer.setData("text",event.currentTarget.id);
+        }
+        function Drop(event){
+            event.preventDefault();
+            var data=event.dataTransfer.getData("text");
+            event.currentTarget.appendChild(document.getElementById(data));
+        }
+
+        
+    </script>
+    
+</html>

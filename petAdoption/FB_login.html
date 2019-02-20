@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Facebook Login JavaScript Example</title>
+<meta charset="UTF-8">
+</head>
+<body>
+    <div id="fb-root"></div>
+    
+    
+<script>
+    
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.10&appId=384016991980564";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+    
+    
+  window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '{384016991980564}',
+    cookie     : true,  // enable cookies to allow the server to access 
+                        // the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.8' // use graph api version 2.8
+  });
+    
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+
+  };
+    
+function getLoginStatus(){
+    
+  FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+  });
+    
+}
+    
+function statusChangeCallback(response) {
+    console.log('statusChangeCallback');
+    console.log(response);
+    // The response object is returned with a status field that lets the
+    // app know the current login status of the person.
+    // Full docs on the response object can be found in the documentation
+    // for FB.getLoginStatus().
+    if (response.status === 'connected') {
+      // Logged into your app and Facebook.
+      testAPI();
+    } else {
+      // The person is not logged into your app or we are unable to tell.
+      document.getElementById('status').innerHTML = '您尚未登入!!';
+    }
+  }
+    
+    
+  function testAPI() {
+    console.log('Welcome!  Fetching your information.... ');
+    FB.api('me?fields=id,name,picture', function(response) {     //"me?"後面可以設定response回傳資料要有哪些種類
+      console.log('Successful login for: ' + response.name);
+        
+      var today=new Date();
+      var currentDateTime = today.getHours();  
+      var greet;
+        
+      if(currentDateTime < 12)
+          greet = '早安';
+      else if(currentDateTime < 18)
+          greet = '午安';
+      else
+          greet = '晚安';
+    
+      document.getElementById('status').innerHTML =
+        greet + ', ' + JSON.stringify(response.name) + '!<br><img width="500" height="500" src="http://graph.facebook.com/'+response.id+'/picture?type=large">'
+    });
+  }
+    
+    </script>
+
+<!--
+  Below we include the Login Button social plugin. This button uses
+  the JavaScript SDK to present a graphical Login button that triggers
+  the FB.login() function when clicked.
+-->
+    
+<!--<div class="fb-login-button" data-max-rows="1" scope="public_profile" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="true" onlogin="getLoginStatus();" ></div>-->
+
+
+<div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="false" onlogin="getLoginStatus();"></div>
+    
+    <center>
+<div id="status">
+</div>
+    </center>
+
+</body>
+</html>

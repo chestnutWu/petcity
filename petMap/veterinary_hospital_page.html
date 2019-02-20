@@ -1,0 +1,577 @@
+<!doctype html>
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PetCity寵物地圖</title>
+        <!--Source from CDN-->
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        <!--Source from local-->
+        <link type="text/css" rel="stylesheet" href="css/app.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/foundation.css">
+        <link rel="stylesheet" href="css/app.css">
+    </head>
+    <body>
+        <div id="framebody">
+            <header id="header">
+                <a href="../index.htm"><img id="page1" src="../images/logo.svg"></a>
+                <a href="../petMap/veterinary_hospital_page.html"><img id="page2" src="../images/pet_map.svg" ></a>
+                <a href="../petArticles/index.html"><img id="page3" src="../images/pet_articles.svg" ></a>
+                <a href="../petRecommend/test.HTML"><img id="page4" src="../images/pet_recommend.svg" ></a>
+                <a href="../petAdoption/pet_adoption_page.html"><img id="page5" src="../images/pet_adoption.svg" ></a>
+                <a href="../petRecognition/DogRecWeb.html"><img id="page6" src="../images/pet_recognition.svg" ></a>
+            </header>
+            <!--側欄-->
+            <div id="sidebar_container">
+                <div class="panel panel-default" id="sidebar_list_group" style="width:75%; height:500px; overflow-y:scroll;">
+                    <div id="hospital-picture" class="picture-container"><img></div>
+                    <div class="panel-heading" id="hospital-name"><span></span></div>
+                    <ul class="list-group" id="detail-info-list">
+                        <li class="list-group-item" id="address">店家地址:<span></span></li>
+                        <li class="list-group-item" id="telephone">店家電話:<span></span></li>
+                        <li class="list-group-item" id="website">店家網址:<a></a></li>
+                        <li class="list-group-item" id="open-hours">
+                            <span class="dropdown">
+                                <button class="btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">
+                                    營業時間:<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu"></ul>
+                            </span>
+                        </li>
+                        <li class="list-group-item" id="star">評價:<span></span></li>
+                    </ul>
+                    <a href="#" class="btn btn-block btn-primary btn-warning" id="directionBtn"><span class="glyphicon glyphicon-flag"></span>路線規劃</a>
+                    <div id="direction_info"></div>
+                </div>
+            </div>
+            
+            <div id="rightPanel">
+                <!--上欄-->
+                <div id="travel-mode">
+                    <b>搜尋縣市:</b>
+                    <select id="city">
+                        <option value="Keelung">基隆市</option>  <option value="Taipei1">台北市</option>
+                        <option value="Taipei2">新北市</option>  <option value="Taoyuan">桃園市</option>
+                        <option value="Hsinchu1">新竹市</option> <option value="Hsinchu2">新竹縣</option>
+                        <option value="Miaoli">苗栗縣</option>   <option value="Taichung">台中市</option>
+                        <option value="Nantou">南投縣</option>   <option value="Changhua">彰化縣</option>
+                        <option value="Yunlin">雲林縣</option>   <option value="Chiayi1">嘉義市</option>
+                        <option value="Chiayi2">嘉義縣</option>  <option value="Tainan">台南市</option>
+                        <option value="Kaohsiung">高雄市</option><option value="Pingtung">屏東縣</option>
+                        <option value="Yilan">宜蘭縣</option>    <option value="Hualien">花蓮縣</option>
+                        <option value="Taitung">台東縣</option>  <option value="Penghu">澎湖縣</option>
+                        <option value="Kinmen">金門縣</option>  
+                    </select>
+
+                    <b>旅行方式:</b>
+                    <select id="mode">
+                        <option value="DRIVING">開車</option>
+                        <option value="WALKING">走路</option>
+                        <option value="TRANSIT">大眾運輸工具</option>
+                    </select>
+                </div>
+
+                <!--地圖-->
+                <div id="map_panel"><div id="map_content"></div><img src="images/4.svg" id="map_frame"></div>
+                <!--Filter-->
+                <div id="distance_evaluation_filter">
+                    <div class="slider_container">
+                        <div class="small-4 columns" id="slider">
+                            <div class="slider" data-slider data-initial-start="10" data-step="1" data-end="20">
+                                <span class="slider-handle" data-slider-handle role="slider" tabindex="1" aria-controls="sliderOutput1"></span>
+                            </div>
+                        </div>
+                        <div class="small-2 columns" id="slider_info">
+                            <input type="number" id="sliderOutput1">
+                        </div>
+                    </div>
+
+                    <div class="stars">
+                        <form action="">
+                            <input class="star star-5" id="star-5" type="radio" name="star"/>
+                            <label class="star star-5" for="star-5"></label>
+                            <input class="star star-4" id="star-4" type="radio" name="star"/>
+                            <label class="star star-4" for="star-4"></label>
+                            <input class="star star-3" id="star-3" type="radio" name="star"/>
+                            <label class="star star-3" for="star-3"></label>
+                            <input class="star star-2" id="star-2" type="radio" name="star"/>
+                            <label class="star star-2" for="star-2"></label>
+                            <input class="star star-1" id="star-1" type="radio" name="star"/>
+                            <label class="star star-1" for="star-1"></label>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="footer"></div>
+        </div>
+      
+    <script type="text/javascript">
+        var taiwan = {lat:23.5,lng:120.5};
+        var map;
+        var markers = [];
+        var selectedCity;
+        var hospitalDataFromDB;
+        var placeService;
+        var directionsService;
+        var directionsRenderer;
+        var currentPlaceId;
+        var markerRangeCircle;
+        //var timer;
+        var phpBaseUrl;
+        var userPosition={};
+        var executeDistanceFilter = false;
+        
+        function initMap(){
+            //存取php檔案的路徑
+            var location = window.location.href;
+            phpBaseUrl = location.substring(0,location.lastIndexOf("/")+1);
+            
+            map = new google.maps.Map(document.getElementById('map_content'),{center:taiwan,zoom:6});
+            selectedCity = $('#city option:selected').text();
+            //google api service
+            placeService = new google.maps.places.PlacesService(map);
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer.setMap(map);
+            directionsRenderer.setPanel(document.getElementById('direction_info'));
+            //控制元件監聽事件
+            document.getElementById('city').addEventListener('change',function(){displayCityHospital();});
+            document.getElementById('mode').addEventListener('change',function(){routePlan();});
+            setRoutePlanButtonOnClickListener();
+            setSliderChangeListener();
+            setEvaluationChangeListener();
+            //取得地圖資料
+            getHospitalDataFromDB();
+            locate();//使用者定位
+        }
+        /*-----------------------------------------------*/
+        /*//將Google資料放入資料庫
+        function setDBInsertTimer(){
+            var index = 884;
+            var timeDelay = 1000;
+            var jsonObj = JSON.parse(hospitalDataFromDB);
+            
+            //console.log("JSONString:",hospitalDataFromDB);
+            //console.log("JSONObject:",jsonObj);
+            //console.log("contnet:",jsonObj[0].hospitalName);
+            for(var i=index;i<1000;i++){
+                var markerLocation = new google.maps.LatLng(jsonObj[i].longitude,jsonObj[i].latitude);
+                var marker = new google.maps.Marker({position : markerLocation,});
+                markers.push(marker);
+                marker.setMap(map);
+                setTimeout(showInfoWindow(jsonObj[i],marker,markerLocation),timeDelay);
+                timeDelay = timeDelay+20*(index-784);
+            }
+        }*/
+        /*-----------------------------------------------*/
+        function getHospitalDataFromDB(){
+            $.get(phpBaseUrl+'getVetHospitalDataFormDB.php',function(data,status){
+                if(status == 'error'){
+                    alert("Data obtained error!");
+                }
+                else{
+                    hospitalDataFromDB = data;
+                    setCityMarker();
+                    //setDBInsertTimer();//資料插入資料庫
+                }
+            });
+        }
+        
+        function setCityMarker(){
+            removeMarkers();
+            $.each(JSON.parse(hospitalDataFromDB),function(index,placeData){
+                if(placeData.city == selectedCity){
+                    var marker = new google.maps.Marker({
+                        position : new google.maps.LatLng(parseFloat(placeData.longitude),parseFloat(placeData.latitude)),
+                        animation: google.maps.Animation.DROP,
+                        icon: {url:'images/hospital_marker.png',size: new google.maps.Size(27, 27),scaledSize: new google.maps.Size(27, 27)},
+                        evaluation: placeData.evaluation //自訂的屬性(評價)
+                    });
+                    
+                    var infoContent ='<div id="iw_container">'+
+                    '<div class="iw_title">'+placeData.hospitalName+'</div>'+
+                    '<div class="iw_content">'+placeData.address+'</div></div>';
+                    
+                    marker.infowindow = new google.maps.InfoWindow({content:infoContent});
+                    markers.push({marker:marker,visible:[true,true]});//{符合距離,符合評價}
+                    marker.addListener('click',function(){showInfoWindow(placeData,marker);});
+                    marker.setMap(map);
+                }
+            });
+        }
+        
+        function removeMarkers(){
+            for(var i=0;i<markers.length;i++){
+                markers[i].marker.setMap(null);
+            }
+            markers = [];
+        }
+        
+        function closeInfoWindow(){
+            for(var i=0;i<markers.length;i++){
+                markers[i].marker.infowindow.close();
+            }
+        }
+        
+        function showInfoWindow(placeData,marker){
+            /*
+            return function(){
+                placeService.textSearch({query:placeData.hospitalName,location:markerLocation,radius:'20'}
+                                   ,placesCallback(marker,placeData));}*/
+            closeInfoWindow();
+            marker.infowindow.open(map,marker);
+            refreshSideBar(placeData);
+            
+            //更新目前要前往的獸醫院
+            currentPlaceId = placeData.place_id;
+        }
+        /*
+        function placesCallback(marker,placeData){
+            return function(results, status){
+        
+                var infoContent ='<div id="iw_container">'+
+                '<div class="iw_title">'+placeData.hospitalName+'</div>'+
+                '<div class="iw_content">'+placeData.address+'</div>';
+                
+                if(status == google.maps.places.PlacesServiceStatus.OK){
+                    //console.log(results);
+                    //console.log("找到的獸醫院數量:"+results.length);
+                    //console.log("Google Data:"+results[0].name);
+                    //console.log("place ID:"+results[0].place_id);
+                    //console.log("Open Data:"+placeData.hospitalName);
+                        
+                    currentPlaceId = {placeId: results[0].place_id};
+                    var request = {placeId: results[0].place_id};
+                    placeService.getDetails(request,function(placeResult,status){
+                        if (status == google.maps.places.PlacesServiceStatus.OK) {
+                            refreshSideBar(placeData);
+                            ///////////
+                            //sendGoogleDataToDataBase(placeData.id,placeResult);
+                            //console.log("Google Data"+placeResult.rating);
+                        }
+                    });
+                }
+                else{
+                    infoContent+='</div>';
+                    console.log("ID:"+placeData.id+" Google資轉換失敗:"+status);
+                }
+                
+                var infowindow = new google.maps.InfoWindow({content:infoContent});
+                infowindow.open(map,marker);
+            }
+        }*/
+        
+        /*
+        function sendGoogleDataToDataBase(id,googleData){
+            var requestToDB = {id:id,place_id:googleData.place_id,rate:googleData.rating};
+            if(googleData.photos){
+                requestToDB.photo = googleData.photos[0].getUrl({'maxWidth':260,'maxHeight':200});
+            }
+            if(googleData.website){
+                requestToDB.website = googleData.website;
+            }
+            
+            if(googleData.opening_hours){
+                if(googleData.opening_hours.weekday_text){
+                    var runningTime = "";
+                    for(var i=0;i<googleData.opening_hours.weekday_text.length;i++){
+                        runningTime += googleData.opening_hours.weekday_text[i];
+                    }
+                    requestToDB.opening_hours = runningTime;
+                }
+            }
+            
+            $.post('insertGoogleDataToDB.php',requestToDB,function(data,status){
+                if(status == 'success'){
+                    console.log("ID:"+id+"傳送GoogleData到DB成功");
+                }
+            }).error(errorResponse);
+        }*/
+        function animateDisplaySideBar(){
+            var sideBar = $('#sidebar_list_group');
+            sideBar.fadeIn('slow');
+        }
+        
+        function refreshSideBar(placeData){
+            if(placeData.photo){$('#hospital-picture img').replaceWith('<img src='+placeData.photo+'>');}
+            else{$('#hospital-picture img').replaceWith('<img src=images/vet_hospital_picture.jpg>');}
+            
+            $('#hospital-name span').replaceWith('<span>'+placeData.hospitalName+'</span>');
+            $('#address span').replaceWith('<span>'+placeData.address+'</span>');
+            
+            if(placeData.telephone){
+                $('#telephone span').replaceWith('<span>'+placeData.telephone+'</span>');
+                $('#telephone').show();
+            }
+            else{$('#telephone').hide();}
+            
+            if(placeData.website){
+                $('#website a').attr("href",placeData.website);
+                $('#website a').attr("target","_blank");
+                $('#website a').text("前往網址");
+                $('#website').show();
+            }
+            else{$('#website').hide();}
+            
+            if(placeData.opening_hours){
+                $('#open-hours .dropdown .dropdown-toggle + .dropdown-menu').empty();
+                $('#open-hours .dropdown .dropdown-toggle + .dropdown-menu').append('<li>'+placeData.opening_hours+'</li>');
+                $('#open-hours').show();
+            }
+            else{
+                $('#open-now').hide();
+                $('#open-hours').hide();
+            }
+            
+            if(placeData.evaluation){
+                $('#star span').replaceWith('<span>'+placeData.evaluation+'</span>');
+                $('#star').show();
+            }
+            else{$('#star').hide();}
+            animateDisplaySideBar();
+        }
+        
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?'Error: The Geolocation service failed.':'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map);
+        }
+        
+        function displayCityHospital(){
+            var selectedCityValue = document.getElementById('city').value;
+            selectedCity = $('#city option:selected').text();
+            switch (selectedCityValue){
+                case 'Keelung':
+                    map.panTo(new google.maps.LatLng(25.10898,121.7081));
+                    break;
+                case 'Taipei1':
+                    map.panTo(new google.maps.LatLng(25.09108,121.5598));
+                    break;
+                case 'Taipei2':
+                    map.panTo(new google.maps.LatLng(24.91571,121.6739));
+                    break;
+                case 'Taoyuan':
+                    map.panTo(new google.maps.LatLng(24.93759,121.2168));
+                    break;
+                case 'Hsinchu1':
+                    map.panTo(new google.maps.LatLng(24.80395,120.9647));
+                    break;
+                case 'Hsinchu2':
+                    map.panTo(new google.maps.LatLng(24.70328,121.1252));
+                    break;
+                case 'Miaoli':
+                    map.panTo(new google.maps.LatLng(24.48927,120.9417));
+                    break;
+                case 'Taichung':
+                    map.panTo(new google.maps.LatLng(24.23321,120.9417));
+                    break;
+                case 'Nantou':
+                    map.panTo(new google.maps.LatLng(23.83876,120.9876));
+                    break;
+                case 'Changhua':
+                    map.panTo(new google.maps.LatLng(23.99297,120.4818));
+                    break;      
+                case 'Yunlin':
+                    map.panTo(new google.maps.LatLng(23.75585,120.3897));
+                    break;
+                case 'Chiayi1':
+                    map.panTo(new google.maps.LatLng(23.47545,120.4473));
+                    break;
+                case 'Chiayi2':
+                    map.panTo(new google.maps.LatLng(23.45889,120.574));
+                    break;
+                case 'Tainan':
+                    map.panTo(new google.maps.LatLng(23.1417,120.2513));
+                    break;
+                case 'Kaohsiung':
+                    map.panTo(new google.maps.LatLng(23.01087,120.666));
+                    break;
+                case 'Pingtung':
+                    map.panTo(new google.maps.LatLng(22.54951,120.62));
+                    break;
+                case 'Yilan':
+                    map.panTo(new google.maps.LatLng(24.69295,121.7195));
+                    break;
+                case 'Hualien':
+                    map.panTo(new google.maps.LatLng(23.7569,121.3542));
+                    break;
+                case 'Taitung':
+                    map.panTo(new google.maps.LatLng(22.98461,120.9876));
+                    break;
+                case 'Penghu':
+                    map.panTo(new google.maps.LatLng(23.56548,119.6151));
+                    break;
+                case 'Kinmen':
+                    map.panTo(new google.maps.LatLng(24.30,118.25));
+                    break;
+                case 'AllCity':
+                    map.panTo(new google.maps.LatLng(23.5,120.5));
+                    break;
+            }
+            setCityMarker();
+        }
+        
+        //定位使用者
+        function locate(){
+            var infoWindow = new google.maps.InfoWindow;
+            var userMarker;
+            //定位使用者的location
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    //在地圖上標出使用者位置
+                    userPosition = new google.maps.LatLng(position.coords.latitude,position.coords.longitude); 
+                    userMarker = new google.maps.Marker({
+                        position: userPosition,
+                        map: map,
+                        icon: "images/home.png"
+                    });
+                    userMarker.setMap(map);
+                    
+                    infoWindow.setPosition(userPosition);
+                    infoWindow.setContent('目前位置');
+                    infoWindow.open(map);
+                    map.setCenter(userPosition);
+                    },function() {
+                        handleLocationError(true, infoWindow, map.getCenter());});
+            }else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+        }
+        
+        //路線規劃
+        function routePlan(){
+            var selectedMode = document.getElementById('mode').value;
+            var directionRequest = {
+                origin: userPosition, //起始位置
+                destination: {placeId: currentPlaceId}, //終點位置 currentPlaceId.placeId
+                travelMode: selectedMode,
+                unitSystem: google.maps.UnitSystem.METRIC
+            };
+                    
+            if(selectedMode == 'TRANSIT'){
+                directionRequest.transitOptions = {
+                    //departureTime: new Date(Date.now()),
+                    modes:['BUS'],
+                    routingPreference:'LESS_WALKING'
+                };
+            }
+            else if(selectedMode == 'DRIVING'){
+                directionRequest.drivingOptions = {
+                    departureTime: new Date(Date.now()),
+                    trafficModel: 'bestguess'
+                }; 
+            }
+                        
+            directionsService.route(directionRequest, function(result, status) {
+                console.log("directionService",result);
+                if (status == 'OK') {
+                    directionsRenderer.setDirections(result);
+                }else {
+                    window.alert('Directions request failed due to ' + status);
+                }
+            });
+        }
+
+        //路線規劃按鈕
+        function setRoutePlanButtonOnClickListener(){  $('#directionBtn').click(function(){routePlan();});}
+        
+        //計算地圖上兩點間距離
+        function calcDistance(place1, place2) {return (google.maps.geometry.spherical.computeDistanceBetween(place1,place2)/1000).toFixed(2);}
+        
+        function setSliderChangeListener(){
+            $('[data-slider]').on('changed.zf.slider',function(){
+                var sliderValue = document.getElementById("sliderOutput1").value;
+                
+                if(executeDistanceFilter){//若為第一次載入,剛完縣市後不執行
+                    filterMarkers(sliderValue);
+                }
+                executeDistanceFilter = true;
+            });
+        }
+        //過濾距離
+        function filterMarkers(sliderValue){
+            //畫圈圈
+            if(markerRangeCircle){markerRangeCircle.setMap(null);}
+            markerRangeCircle = new google.maps.Circle({
+                strokeColor:'#EA7500',
+                strokeOpacity:0.8,
+                strokeWeight:2,
+                fillColor:'#FFAF60',
+                fillOpacity:0.35,
+                map:map,
+                center:userPosition,
+                radius: sliderValue*1000
+            });
+            
+            for(var i=0;i<markers.length;i++){
+                if(Number(calcDistance(userPosition,markers[i].marker.position)) > Number(sliderValue)){//超出範圍
+                    markers[i].visible[0] = false;
+                }
+                else{
+                    markers[i].visible[0] = true;
+                }
+                    
+                //要不要顯示
+                if(markers[i].visible[0] && markers[i].visible[1]){
+                    markers[i].marker.setVisible(true);
+                }
+                else{
+                    markers[i].marker.setVisible(false);
+                }
+            }
+        }
+        
+        function setEvaluationChangeListener(){
+            $('input[type=radio][name=star]').change(function(){
+                var starNumber;
+                if($('input[type=radio][id=star-5]').is(':checked')){starNumber = 5;}
+                else if($('input[type=radio][id=star-4]').is(':checked')){starNumber = 4;}
+                else if($('input[type=radio][id=star-3]').is(':checked')){starNumber = 3;}
+                else if($('input[type=radio][id=star-2]').is(':checked')){starNumber = 2;}
+                else if($('input[type=radio][id=star-1]').is(':checked')){starNumber = 1;}
+                highlightMarkers(starNumber);
+            });
+        }
+        //過濾評價
+        function highlightMarkers(starNumber){
+            for(var i=0;i<markers.length;i++){
+                if(markers[i].marker.evaluation){//有評價
+                    if(markers[i].marker.evaluation < starNumber){
+                        markers[i].visible[1] = false;
+                        console.log("adjust evaluation set visible false "+calcDistance(userPosition,markers[i].marker.position));
+                    }
+                    else{
+                        markers[i].visible[1] = true;
+                        console.log("adjust evaluation set visible false "+calcDistance(userPosition,markers[i].marker.position));
+                    }
+                }
+                else{//無評價
+                    markers[i].visible[1] = false;
+                }
+                
+                //要不要顯示
+                if(markers[i].visible[0] && markers[i].visible[1]){
+                    markers[i].marker.setVisible(true);
+                }
+                else{
+                    markers[i].marker.setVisible(false);
+                }
+            }
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2DVhqvAHRY90cBnp1b3Da7yarJlXuhWU&language=zh-TW&libraries=geometry,places&callback=initMap"></script> 
+
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/vendor/what-input.js"></script>
+    <script src="js/vendor/foundation.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

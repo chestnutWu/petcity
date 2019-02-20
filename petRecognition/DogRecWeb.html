@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PetCity寵物辨識</title>
+    <meta name="Generator" content="EditPlus" />
+    <meta name="Author" content="男丁格爾's 脫殼玩" />
+    <meta name="Keywords" content="" />
+    <meta name="Description" content="" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="../hover.css" rel="stylesheet">
+    <link rel="Shortcut Icon" type="image/x-icon" href="../mainpageImage/favicon.ico" />
+</head>
+    
+<style>
+        body{
+            background-image: url("images/greenBackground.svg");
+        }
+    
+        header{
+          background-image: url("../images/star_background.svg");
+          background-size: cover;
+          background-repeat: no-repeat;
+          width: 100vw;
+          height:120px;
+        }
+        
+        #page1{
+          width: 10%;
+          height: 110px;
+          float:left;
+          margin-left: 65px;
+          margin-top: 5px;
+        }
+
+        #page2{
+          width: 10%;
+          height: 100px;
+          float:left;
+          margin-left: 120px;
+          margin-top: 10px;
+        }
+
+        #page3{
+          width: 10%;
+          height: 100px;
+          float:left;
+          margin-left: 80px;
+          margin-top: 10px;
+        }
+
+        #page4{
+          width: 10%;
+          height: 100px;
+          float:left;
+          margin-left: 80px;
+          margin-top: 10px;
+        }
+
+        #page5{
+          width: 10%;
+          height: 100px;
+          float:left;
+          margin-left: 80px;
+          margin-top: 10px;
+        }
+
+        #page6{
+          width: 10%;
+          height: 100px;
+          float:left;
+          margin-left: 80px;
+          margin-top: 10px;
+        }
+    
+    #screen_frame{
+        position: absolute;
+        top: 150px;
+        z-index: 1;
+        width: 1200px;	/* 整個區塊的寬 */
+		height:460px;	/* 整個區塊的高 */
+    }
+    
+	#abgne-gallery-20111224 {
+        position: relative;
+        margin: 70px;
+		width: 960px;	/* 整個區塊的寬 */
+		height: 400px;	/* 整個區塊的高 */ 
+        z-index: 2;
+        /*background: url(images/screen_bg.svg) no-repeat;
+        /*background: url(images/screen_bg.svg) no-repeat;
+        background-size: contain;*/
+	}
+	#abgne-gallery-20111224 ul {
+		width: 800px;	/* 整個區塊的寬 - 兩個左右鈕的寬 */
+		height: 400px;
+		position: absolute;
+		left: 70px;		/* 一個左鈕的寬 */
+		overflow: hidden;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	#abgne-gallery-20111224 li a {
+		outline: none;
+	}
+	#abgne-gallery-20111224 li a img {
+		vertical-align: middle;
+		border: none;
+	}
+	#abgne-gallery-20111224 .controls {
+		position: absolute;
+		top: 180px;		/* (整個區塊的高 - 自己的高) / 2 */
+		display: block;
+		width: 40px;
+		height: 40px;
+		outline: none;
+
+	}
+	#abgne-gallery-20111224 .previous {
+        background: url(images/left_arrow.svg) no-repeat;
+        background-size: contain;
+        left: 0;
+		background-position: 0px 0;
+	}
+	#abgne-gallery-20111224 .next {
+        background: url(images/right_arrow.svg) no-repeat;
+        background-size: contain;
+        right: 0;
+		background-position: 0px 0;
+	}
+    
+    #usingDefaultPhotoButton{
+        margin-right:100px;
+    }
+    
+    #uploadImage{
+        background: url(images/button_2.svg) no-repeat;
+    }
+    
+    #imageDiv{
+        background: url(images/photoFrame.svg) no-repeat;
+        background-size: contain;
+        padding-top:50px;
+        padding-right:80px;
+        padding-left:65px;
+        padding-bottom: 20px;
+    }
+    
+    #jsonOutput{
+        background: url(images/resultBackground.svg) no-repeat;
+        background-size: contain;
+        padding-left: 50px;
+    }
+    
+</style>
+
+<body>
+    
+  <header id = "header"  >
+                <a href="../index.htm"><img id = "page1" src="../images/logo.svg"></a>
+                <a href="../petMap/veterinary_hospital_page.html"><img id = "page2" src="../images/pet_map.svg" class="hvr-grow" ></a>
+                <a href="../petArticles/index.html"><img id = "page3" src="../images/pet_articles.svg" class="hvr-grow" ></a>
+                <a href="../petRecommend/test.HTML"><img id = "page4" src="../images/pet_recommend.svg" class="hvr-grow" ></a>
+                <a href="../petAdoption/pet_adoption_page.html"><img id = "page5" src="../images/pet_adoption.svg" class="hvr-grow" ></a>
+                <a href="../petRecognition/DogRecWeb.html"><img id = "page6" src="../images/pet_recognition.svg" class="hvr-grow" ></a>
+  </header>    
+    
+<div id = "chosePhotoPage">
+    <img src="images/screen.svg" id="screen_frame" align="center">
+    <center>
+        <div id="abgne-gallery-20111224">
+                <a href="#previous" class="controls previous" rel="previous"></a>
+                <a href="#next" class="controls next" rel="next"></a>
+                <ul>
+                    <li><a href="#"><img src="dogs_image/%E5%8D%9A%E7%BE%8E%E7%8A%AC.jpg" /></a></li>
+                    <li><a href="#"><img src="dogs_image/%E5%90%89%E5%A8%83%E5%A8%83.jpg" /></a></li>
+                    <li><a href="#"><img src="dogs_image/%E5%B7%B4%E5%93%A5.jpg" /></a></li>
+                    <li><a href="#"><img src="dogs_image/%E6%9F%B4%E7%8A%AC.jpg" /></a></li>
+                    <li><a href="#"><img src="dogs_image/%E7%B1%B3%E6%A0%BC%E9%AD%AF.jpg" /></a></li>
+                    <li><a href="#"><img src="dogs_image/%E7%B4%85%E8%B2%B4%E8%B3%93.jpg" /></a></li>
+                    <li><a href="#"><img src="dogs_image/%E7%91%AA%E7%88%BE%E6%BF%9F%E6%96%AF.jpg" /></a></li>
+                </ul>
+        </div>
+        
+        <img id="usingDefaultPhotoButton" src="images/button_1.svg" height=70px onclick = "usingDefaultPhoto()">
+        <img src="images/projector.svg" width="150" style="margin-right:100px">
+        <img id="usingYourImageButton" src="images/button_2.svg" height=70px onclick = "usingYourImage()"><br>
+        
+        <input accept="image/*" id="uploadImage" type="file" style="display:none"><br>
+        
+<!--        <input type="text" name="inputImage" id="inputImage" value="" />-->
+<!--        <button onclick="usingWebURL()">Recognize Dog</button>-->
+    </center>
+</div>  
+    
+<div id = "analyzing" style="display:none;">  
+    <center>
+        <img src="images/waitting.svg" style="width:100%"><br>
+    </center>
+</div>
+    
+    
+<div id = "resultPage" style="display:none;">    
+    <center>
+    <div id="wrapper" style="width:1120px; display:table;">
+        
+        <div id="imageDiv" style="width:480px; display:table-cell;">
+            <br><br>
+            
+                <img id="sourceImage" width=240 style="height:240px" />
+                <img id="tryAgain" onclick="location.reload();" src="images/tryAgain.svg" height=50px style="margin-top:50px;"/>
+        </div>
+        
+        <div id="jsonOutput" style="width:700px; display:table-cell; text-align:left; ">
+            <div id="responseTextArea_1" style="width:500px; height:137px; margin-top:80px;"></div>
+            <div id="responseTextArea_2" style="width:500px; height:140px;"></div>
+            <div id="responseTextArea_3" style="width:500px; height:137px;"></div>
+        </div>
+
+    </div>
+    </center>
+</div>
+    
+<script type="text/javascript">
+    
+    var matchingTable = {
+        
+        "Akita" : {"chineseName":"秋田犬",
+                   "discription":"秋田犬是日本犬之一，是國家天然紀念物之六種日本犬中唯一的大型犬種。在日本，送秋田犬的雕像、圖片代表著「祝你早日康復」。以對飼主忠誠聞名，日本知名的忠犬八公即為秋田犬。"
+                  },
+        "Beagle": {"chineseName":"小獵犬(米格魯)",
+                   "discription":"小獵犬最早用於狩獵，美國漫畫《Peanuts》中的主角史奴比，被認為可能是全世界最出名的小獵犬。嗅覺優秀，被人們訓練成檢疫偵測犬。"
+                  },
+        "Bichon Frise" : {"chineseName":"比熊犬",
+                          "discription":"一種嬌小的、強健的白色粉撲型的狗，具有歡快的性格，從它羽毛般歡快地卷在背後的尾巴和好奇的眼神中就能體現出來。動作優雅、靈活逗人喜愛。"
+                         },
+        "Border Collie" : {"chineseName":"邊境牧羊犬",
+                           "discription":"主要協助農場放牧，懂得用眼神控制羊群。以精力旺盛，體格精實且容易學習雜技運動而聞名。被認為是最聰明的犬種，智商大約等同六、七歲的小孩，在犬類競技與牧羊犬競賽中往往表現亮眼。"
+                          },
+        "Bull Terrier" : {"chineseName":"牛頭㹴犬",
+                          "discription":"是牛頭犬與梗犬交配得到的品種。其生性好動，會忠實執行指令，但較不知節制與退縮，加上體格較強壯，常被誤會為好鬥、兇惡之犬種，不過只要施以正確的訓練，其能力便能對人帶來很大的幫助。"
+                         },
+        "Chihuahua" : {"chineseName":"吉娃娃",
+                       "discription":"世界上最小的犬種之一，以細小的體型、大眼睛、特別大的耳朵和直豎的尾巴為特徵。性格神經質，絕大多數的吉娃娃喜歡到處吠叫。"
+                      },
+        "Dachshund" : {"chineseName":"臘腸犬",
+                       "discription":"一種短腿，長身的臘犬。此品種被發展為嗅臘，追蹤，及捕殺獾類及其他穴居的動物。忠誠、頑皮的犬種，喜愛追逐小動物和小鳥的嗜好特別有名。"
+                      },
+        "Dalmatian" : {"chineseName":"大麥町犬",
+                       "discription":"平靜而警惕、輪廓勻稱、強健、肌肉發達、且活潑，毫不羞怯，表情聰明伶俐，聽話易訓，感覺敏銳，警戒心強，容易與小孩相處。擁有出色的奔跑與撕咬能力，所以也經常被用作比賽犬。"
+                      },
+        "Doberman Pinscher" : {"chineseName":"杜賓犬",
+                               "discription":"精力充沛而且有力，非常聰明、堅強、有適應性，非常樂於工作，使他成為一種很好的軍犬、警衛犬、伴侶犬、護衛犬和多用途犬種。"
+                              },
+        "Golden Retriever" : {"chineseName":"黃金獵犬",
+                              "discription":"作為用來在獵捕野禽的尋回犬而培養出來的，游泳的續航力極佳。有耐心並且對主人要求不多，性格討喜。"
+                             },
+        "Great Pyrenees": {"chineseName":"大白熊犬",
+                           "discription":"大白熊犬是一種歷史悠久的犬類，已被牧羊人使用了數百年。主要用作守護犬、救助犬和伴侶犬。 "
+                          },
+        "Husky": {"chineseName":"哈士奇",
+                  "discription":"哈士奇精力充沛，體格健壯。它們通常有密集的雙層毛，淡藍色的眼睛，但也有一些是棕色或二眼不同色。最初是用來拉雪橇，參與大型捕獵活動，和保護村莊。"
+                 },
+        "Labrador Retriever": {"chineseName":"拉布拉多犬",
+                               "discription":"拉布拉多犬：天生個性溫和、活潑、沒有攻擊性和智能高，是適合被選作導盲犬或其他工作犬的狗品種，跟黃金獵犬、哈士奇並列三大無攻擊性犬類之一。"
+                              },
+        "Maltese": {"chineseName":"馬爾濟斯",
+                    "discription":"馬爾濟斯的性格相當溫馴乖巧，不怕生，很好客，很顧家，很會撒嬌。雖然有時會出現小型犬多有的神經質、容易緊張的一面，但仍屬於容易飼養照料的犬種。"
+                   },
+        "Pomeranian": {"chineseName":"博美犬",
+                       "discription":"博美是一種活潑的犬種，聰明勇敢並且是忠實的同伴。牠藉著宏亮尖銳的叫聲，通知入侵者的到來，證明了牠們為優秀的犬。"
+                      },
+        "Poodle": {"chineseName":"貴賓犬",
+                   "discription":"貴賓犬的性格活潑好動、機警、聰敏、友善，是犬類中智商排名第二的品種。貴賓犬非常怕寂寞，是極需人細心陪伴的犬種之一。"
+                  },
+        "Pug": {"chineseName":"巴哥犬",
+                "discription":"身體比例勻稱結實，頭大黑臉黑鼻子、額頭有皺紋，小小的垂耳，臉部極具特徵，日耳曼系國家稱之為墨普斯犬。是溫馴的狗，很喜歡和人相處且對環境適應力極佳。"
+               },
+        "Schnauzer": {"chineseName":"雪納瑞",
+                      "discription":"外表非常有特色，結實、健壯，並且「方方正正」的、很可愛，脾氣也很好，友善、調皮、且充滿活力"
+                     },
+        "Shar Pei": {"chineseName":"沙皮狗",
+                     "discription":"最大特點是皮有深深的褶皺。是最古老的犬種之一，以其好鬥和警惕出名。牠們的褶皺被特意培育以提高其打鬥本領，那樣在其他狗咬住它們的褶皺時，仍可以回過身來，反咬對方。"
+                    },
+        "Shiba Inu": {"chineseName":"柴犬",
+                      "discription":"日本犬種之一，被指定為日本的天然紀念物。天性較為大膽、獨立，同時也有頑固的一面。能與貓和平相處，且喜歡保持身體乾淨。"
+                     },
+        "Shih Tzu": {"chineseName":"西施犬",
+                     "discription":"原稱為「獅子狗」，是原產西藏的拉薩犬與中國宮廷內犬種混合所產生之混合品種。活潑、聰明、敏捷亦安靜，有時頑固、孤僻。"
+                    },
+        "Spaniel" : {"chineseName":"史賓格犬",
+                     "discription":"源於英國，為狩獵用的尋回犬。由於非常聰明、服從性高，而且嗅覺靈敏，被各地海關及警察機構訓練成為專門搜索違禁品的犬種。"
+                    },
+        "Welsh Corgi": {"chineseName":"柯基犬",
+                        "discription":"原本培養來放牧牛羊，低矮的身材讓他們免於被牛隻踢到。主動、相當聰明，是絕佳的夥伴，並且在牧羊競賽跟犬隻敏捷競賽中是出色的參賽者。"
+                       },
+        "West Highland White Terrier": {"chineseName":"西高地白㹴",
+                                        "discription":"以期獨具特色的毛色聞名。原產於蘇格蘭，最初被用於協助捕獵狐狸和獾。西莎品牌的代言狗即為此品種。"
+                                       },
+        "Yorkshire Terrier": {"chineseName":"約克夏㹴",
+                              "discription":"約克夏㹴：個性聰明又自信、警覺性高且友善之外又帶點固執，一般都喜愛撒嬌。"
+                             },
+    }
+ 
+    
+    //使用範例預設照片
+    function usingDefaultPhoto()
+    {
+        document.querySelector("#sourceImage").src = "http://140.115.80.221/petRecognition/"+_centerPhotoUrl;
+//        alert("http://140.115.80.221/petRecognition/"+_centerPhotoUrl);
+        processImage("http://140.115.80.221/petRecognition/"+_centerPhotoUrl);
+    }
+    
+    //使用自己上傳的照片
+    function usingYourImage(){
+        
+        $("#uploadImage").click();
+    }
+    
+    $("#uploadImage").change(function(){
+        readImage( this );
+    });
+    
+    
+    function readImage(input) {
+      if ( input.files && input.files[0] ) {
+          var FR= new FileReader();
+          FR.onload = function(e) {
+          //e.target.result = base64 format picture
+          
+          $("#sourceImage").attr( "src", e.target.result );
+          var base64Img = e.target.result;
+          console.log(e.target.result);
+          $.post("store_img.php", {upfile:base64Img},function(data, status){
+                       //alert("Data: " + data + "\nStatus: " + status);
+                       processImage(data);
+                    });
+        };       
+        FR.readAsDataURL( input.files[0] );
+      }
+    }
+    
+    //使用URL
+    function usingWebURL(){
+        
+        var sourceImageUrl = document.getElementById("inputImage").value;
+        document.querySelector("#sourceImage").src = sourceImageUrl;
+        processImage(sourceImageUrl);
+    }
+    
+    
+    
+    //向custom vision發request
+    function processImage(sourceImageUrl) {
+
+        document.getElementById("chosePhotoPage").style.display = "none";
+        document.getElementById("header").style.display = "none";
+        document.getElementById("analyzing").style.display = "block";
+        
+        // Display the image.
+        $.ajax({
+            url: "https://southcentralus.api.cognitive.microsoft.com/customvision/v1.0/Prediction/d60c4a1b-7d8c-474d-8679-5fe924ba83cb/url?iterationId=d1669cd5-7f76-4ec6-98da-c0e4023ff839",
+            headers: {
+                "Contnent-Type": "application/json",
+                "Prediction-key": "507f5b99a1ed472d92cf11bee425c13c"
+            }, 
+            type: "POST",
+            // Request body
+            data: { url: sourceImageUrl}
+        })
+        .done(function(data) {
+            
+            document.getElementById("analyzing").style.display = "none";
+            document.getElementById("header").style.display = "block";
+            document.getElementById("resultPage").style.display = "block";
+            
+            var responseStr = "";
+            for(var i=0;i<3;i++){
+                var breed = matchingTable[data["Predictions"][i]["Tag"]]["chineseName"];
+                var discription =  matchingTable[data["Predictions"][i]["Tag"]]["discription"];
+                var probability = data["Predictions"][i]["Probability"]*100;
+                
+                if(probability > 70){
+                    probability = probability.toFixed(2);
+                    responseStr  =  "<font style='color:firebrick'>"+breed +"</font><br><font style='color:blue''>相似度："+ probability+"%</font><br>"+discription+"<br><br>";
+                    $("#responseTextArea_"+(i+1)).append(responseStr);
+                }else{
+                    if(i==0)
+                    {
+                         $("#responseTextArea_"+(i+1)).append("<center><h1>找不到圖片中的狗狗!!</h1></center>");   
+                    }
+                    break;   
+                }            
+            }
+//            $("#responseTextArea").val(JSON.stringify(data, null, 2));
+        })
+        .fail(function() {
+            alert("error");
+        });
+    };
+    
+</script>
+    
+<script type="text/javascript">
+    var _centerPhotoUrl = "";
+	// 當網頁載完後執行(因為要抓圖片的寬高)
+	$(window).load(function(){
+		// 先取得相關區塊及圖片的寬高
+		// 並先計算出大圖片要垂直置中所需要的 top 值
+		var $gallery = $('#abgne-gallery-20111224'), 
+			$frame = $gallery.find('ul'), 
+			_frameHeight = $frame.height(), 
+			_frameWidth = $frame.width(), 
+			$li = $frame.find('li'), 
+			$img = $li.find('img'), 
+			_imgLength = $img.length, 
+			_imgWidth = $img.width(),
+			_imgHeight = $img.height(),
+			_topDiff = (_frameHeight - _imgHeight) / 2, 
+			_animateSpeed = 200;
+            
+		
+		// 設定每張圖片縮放比例
+		// _totalWidth 用來記錄寬度累加
+		var resizeRatio = [ 0.6, 0.7, 0.8, 1, 0.8, 0.7, 0.6], 
+			liCss = [], 
+			_totalWidth = 0;
+		
+		// 預先算出每張圖片縮放後的總寬度
+		var _m = 0;
+		$img.each(function(i){ 
+			_m += $(this).width() * resizeRatio[i];
+		});
+		// 平均分配要重疊的寬度
+		var _leftDiff = Math.ceil((_m - _frameWidth) / (_imgLength - 1));
+		
+		// 設定每一個 li 的位置及圖片寬高
+		$li.each(function(i){
+			var $this = $(this), 
+				_width = _imgWidth * resizeRatio[i],
+				_height = _imgHeight * resizeRatio[i];
+            
+			liCss.push({
+				height: _height, 
+				width: _width, 
+				left: _totalWidth  + (i == _imgLength - 1 ? 1 : 0), 
+				top: _topDiff + (_imgHeight - _height) / 2, 
+				zIndex: resizeRatio[i] * 10
+			});
+
+			$this.css(liCss[liCss.length-1]).css({
+				position: 'absolute',
+				border: '1px solid white'
+			}).data('_index', i).find('img').css({
+				width: '100%', 
+				height: '100%'
+			});
+			
+			_totalWidth += _width - _leftDiff;
+            
+            if(i == Math.floor(_imgLength/2)){
+                    _centerPhotoUrl = $this.find("img").attr("src");
+            }
+		});
+		
+		// 當滑鼠點擊在 $gallery 中的 .controls 時
+		$gallery.on('click', '.controls', function(){
+			var $button = $(this);
+			
+			// 重新計算每一個 li 的位置及圖片寬高
+			$li.each(function(){
+				var $this = $(this), 
+					_index = $this.data('_index');
+
+				_index = ($button.hasClass('next') ? (_index - 1 + _imgLength) : (_index + 1)) % _imgLength;
+				$this.data('_index', _index);
+                if(_index == Math.floor(_imgLength/2)){
+                    _centerPhotoUrl = $this.find("img").attr("src");
+                }
+
+				$this.stop(false, true).animate(liCss[_index], _animateSpeed);
+			});
+
+			return false;
+		});
+        
+        
+        //把黃色背景對到中間
+        var frameWidth = (document.body.clientWidth-1200)/2/(document.body.clientWidth)*100;
+        var str = frameWidth+"%";
+        document.getElementById("screen_frame").style.marginLeft = str;
+        
+	});
+    
+    
+    
+    
+</script>
+    
+</body>
+</html>

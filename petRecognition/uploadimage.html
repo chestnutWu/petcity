@@ -1,0 +1,111 @@
+<head>
+  <title>picture upload</title>
+  <script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+  <link rel="Shortcut Icon" type="image/x-icon" href="../mainpageImage/favicon.ico" />
+</head>
+<body>
+    
+
+            <header id = "header"  >
+                <a href="#"><img id = "page1" src="../images/logo.svg"></a>
+                <a href="../petMap/veterinary_hospital_page.html"><img id = "page2" src="../images/pet_map.svg" ></a>
+                <a href="../petArticles/index.html"><img id = "page3" src="../images/pet_articles.svg" ></a>
+                <a href="../petAdoption/pet_adoption_page.html"><img id = "page4" src="../images/pet_adoption.svg" ></a>
+                <a href="../petRecommend/%E5%BF%83%E7%90%86%E6%B8%AC%E9%A9%97.HTML"><img id = "page5" src="../images/pet_recommend.svg" ></a>
+                <a href="../petRecognition/DogRecWeb.html"><img id = "page6" src="../images/pet_recognition.svg" ></a>
+            </header>
+
+    
+  <input accept="image/*" id="uploadImage" type="file">
+  <img id="img" src="">
+  <script>
+    $("#uploadImage").change(function(){
+      readImage( this );
+    });
+ 
+    function readImage(input) {
+      if ( input.files && input.files[0] ) {
+        var FR= new FileReader();
+        FR.onload = function(e) {
+          //e.target.result = base64 format picture
+          $('#img').attr( "src", e.target.result );
+          var base64Img = e.target.result;
+          console.log(e.target.result);
+          $.post("store_img.php", {upfile:base64Img},function(data, status){
+                        alert("Data: " + data + "\nStatus: " + status);
+                    });
+        };       
+        FR.readAsDataURL( input.files[0] );
+      }
+    }
+  </script>
+</body>
+
+<style>
+        body{
+            background-image: url("images/greenBackground.svg");
+        }
+    
+        header{
+
+          background-image: url("../images/star_background.svg");
+          background-size: cover;
+          background-repeat: no-repeat;
+          width: 100vw;
+          height:120px;
+
+        }
+        
+        #page1{
+          width: 10%;
+          height: 110px;
+          float:left;
+          margin-left: 65px;
+          margin-top: 5px;
+        }
+
+        #page2{
+          width: 10%;
+          height: 100px;
+          float:left;
+          margin-left: 120px;
+          margin-top: 10px;
+        }
+
+        #page3{
+          width: 10%;
+          height: 100px;
+          float:left;
+          margin-left: 80px;
+          margin-top: 10px;
+        }
+
+        #page4{
+          width: 10%;
+          height: 100px;
+          float:left;
+          margin-left: 80px;
+          margin-top: 10px;
+        }
+
+        #page5{
+          width: 10%;
+          height: 100px;
+          float:left;
+          margin-left: 80px;
+          margin-top: 10px;
+        }
+
+        #page6{
+          width: 10%;
+          height: 100px;
+          float:left;
+          margin-left: 80px;
+          margin-top: 10px;
+        }
+
+    
+    
+</style>
+
+

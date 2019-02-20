@@ -1,0 +1,535 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PetCity寵物領養</title>
+        <!--Source from CDN-->
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+        <!--For pretty check box-->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+        <link type="text/css" rel="stylesheet" href="css/pure-css-segmented-controls-master/segmented-controls.css">
+        
+        <!--Source from local-->
+        <link type="text/css" rel="stylesheet" href="css/app.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/foundation.css">
+        <link rel="stylesheet" href="css/app.css">
+        <link href="../hover.css" rel="stylesheet">
+        <link rel="Shortcut Icon" type="image/x-icon" href="../mainpageImage/favicon.ico" />
+    </head>
+    <body>
+        <div id="bodyFrame">
+            <header id ="header">
+                    <a href="../index.htm"><img id = "page1" src="../images/logo.svg"></a>
+                    <a href="../petMap/veterinary_hospital_page.html"><img id = "page2" src="../images/pet_map.svg" class="hvr-grow"></a>
+                    <a href="../petArticles/index.html"><img id = "page3" src="../images/pet_articles.svg" class="hvr-grow" ></a>
+                    <a href="../petRecommend/test.HTML"><img id = "page4" src="../images/pet_recommend.svg" class="hvr-grow"></a>
+                    <a href="../petAdoption/pet_adoption_page.html"><img id = "page5" src="../images/pet_adoption.svg" class="hvr-grow" ></a>
+                    <a href="../petRecognition/DogRecWeb.html"><img id = "page6" src="../images/pet_recognition.svg" class="hvr-grow" ></a>
+            </header> 
+        
+            <div id="rightPanel">
+                <div id="loginPanel">
+                    <center>
+                        <span id="status"></span>
+                        <div class="fb-login-button" data-max-rows="1" data-size="large" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="false" onlogin="getLoginStatus();"></div>
+                    </center>
+                </div>    
+
+                <div class="callout primary" id="save_list">
+                    <p>收藏的寵物列表</p>
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" href="#favorDog">狗狗</a></li>
+                        <li><a data-toggle="tab" href="#favorCat">貓咪</a></li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div id="favorDog" class="tab-pane fade in active" style="width:100%; height:600px; overflow-y:scroll;"></div>
+                        <div id="favorCat" class="tab-pane fade" style="width: 100%; height: 600px; overflow-y:scroll;"></div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="image_panel">
+                <div id="image_content">
+                    <center><img id="strayPhoto" height="150px"></center>
+                    <div class="expanded button-group">
+                        <img src="image/add_collection.svg" id="saveAsFavorBtn" style="width:30%;">
+                        <img src="image/detail.svg" data-open="viewPetDetail" id="animalDetailInfo" style="width:30%;">
+                        <div class="reveal" id="viewPetDetail" data-reveal>
+                            <center><h1>動物詳細資料</h1></center>
+                            <div id="shelterInfo">
+                                <p class="lead" id="shelterName"></p>
+                                <p id="shelterTel"></p>
+                                <p id="shelterAddr"></p>
+                            </div>
+
+                            <div id="animalInfo">
+                                <p id="animalID"></p>
+                                <p id="animalKind"></p>
+                                <p id="animalSex"></p>
+                                <p id="animalSize"></p>
+                                <p id="animalColor"></p>
+                                <p id="animalAge"></p>
+                                <p id="animalStatus"></p>
+                                <p id="animalSterilization"></p>
+                                <p id="animalBacterin"></p>
+                            </div>
+
+                            <div><img id="animalPhoto"></div>
+
+                            <button class="close-button" data-close aria-label="Close modal" type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center><button class="success button" id="gotoShelter">前往認養</button></center>
+                        </div>
+                        <img src="image/dislike.svg" id="dislikeBtn" style="width:30%;">
+                    </div>
+                </div>
+            </div>
+        
+            <div class="callout warning" id="filter_form">
+                <label>流浪動物所在縣市:
+                    <select id="city">
+                        <option value="Taipei1">臺北市</option>  <option value="Keelung">基隆市</option>  
+                        <option value="Taipei2">新北市</option>  <option value="Taoyuan">桃園市</option>
+                        <option value="Hsinchu1">新竹市</option> <option value="Hsinchu2">新竹縣</option>
+                        <option value="Miaoli">苗栗縣</option>   <option value="Taichung">臺中市</option>
+                        <option value="Nantou">南投縣</option>   <option value="Changhua">彰化縣</option>
+                        <option value="Yunlin">雲林縣</option>   <option value="Chiayi1">嘉義市</option>
+                        <option value="Chiayi2">嘉義縣</option>  <option value="Tainan">臺南市</option>
+                        <option value="Kaohsiung">高雄市</option><option value="Pingtung">屏東縣</option>
+                        <option value="Yilan">宜蘭縣</option>    <option value="Hualien">花蓮縣</option>
+                        <option value="Taitung">臺東縣</option>  <option value="Penghu">澎湖縣</option>
+                        <option value="Kinmen">金門縣</option>
+                    </select>
+                </label>
+
+                <label>收容所名稱:
+                    <select id="shelter">
+                        <option value="shelter1">臺北市動物之家</option>
+                    </select>
+                </label>
+
+                <fieldset class="large-6 columns">
+                        動物種類:
+                        <ul class="nav nav-pills" id="animalKindOption">
+                            <li role="presentation" class="active"><a data-toggle="tab">全部</a></li>
+                            <li role="presentation"><a data-toggle="tab">狗</a></li>
+                            <li role="presentation"><a data-toggle="tab">貓</a></li>
+                        </ul>
+                </fieldset>
+
+                <ul class="accordion" data-accordion data-allow-all-closed="true">
+                    <li class="accordion-item" data-accordion-item>
+                        <a href="#" class="accordion-title">進階設定</a>
+                        <div class="accordion-content" data-tab-content>
+                            <label>體型:
+                                <select id="bodytypeOption">
+                                    <option value="all">全部</option><option value="small">SMALL</option>
+                                    <option value="mini">MINI</option><option value="medium">MEDIUM</option>
+                                    <option value="big">BIG</option>
+                                </select>
+                            </label>
+
+                            動物性別:
+                            <ul class="nav nav-pills" id="animalSexOption">
+                                <li role="presentation" class="active"><a data-toggle="tab">全部</a></li>
+                                <li role="presentation"><a data-toggle="tab">M</a></li>
+                                <li role="presentation"><a data-toggle="tab">F</a></li>
+                            </ul>
+                            
+                            動物年紀:
+                            <ul class="nav nav-pills" id="animalAgeOption">
+                                <li role="presentation" class="active"><a data-toggle="tab">全部</a></li>
+                                <li role="presentation"><a data-toggle="tab">CHILD</a></li>
+                                <li role="presentation"><a data-toggle="tab">ADULT</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <a class="button primary expanded" id="recommandBtn">進行推薦</a>
+            </div>
+        </div>
+        
+    <script type="text/javascript">
+        var adoptionDataSourceUrl = "http://data.coa.gov.tw/Service/OpenData/AnimalOpenData.aspx";
+        var adoptionDataObj;
+        var adoptionDataIndex = 0;
+        var selectedShelter = '臺北市動物之家';
+        var cityIndex = 0;
+        var shelterArray = [['臺北市動物之家'],['基隆市寵物銀行']
+                            ,['新北市新莊區公立動物之家','新北市新店區公立動物之家','新北市板橋區公立動物之家','新北市中和區公立動物之家','新北市淡水區公立動物之家','新北市瑞芳區公立動物之家','新北市五股區公立動物之家','新北市八里區公立動物之家','新北市三芝區公立動物之家','新北市政府動物保護防疫處'],['桃園市動物保護教育園區'],['新竹市動物收容所'],['新竹縣動物收容所'],['苗栗縣生態保育教育中心'],['臺中市動物之家南屯園區','臺中市動物之家后里園區'],['南投縣公立動物收容所'],['彰化縣流浪狗中途之家'],['雲林縣流浪動物收容所'],['嘉義市流浪動物收容所'],['嘉義縣流浪犬中途之家'],['臺南市動物之家灣裡站','臺南市動物之家善化站'],['高雄市壽山動物保護教育園區','高雄市燕巢動物保護關愛園區'],['屏東縣流浪動物收容所'],['宜蘭縣流浪動物中途之家'],['花蓮縣流浪犬中途之家'],['臺東縣動物收容中心'],['澎湖縣流浪動物收容中心'],['金門縣動物收容中心']];
+        //篩選條件變數
+        var animalKind = '全部';
+        var animalBodyType = '全部';
+        var animalSex = '全部';
+        var animalAge = '全部';
+        
+        var loginStatus = false;
+        var userID = '';
+        var userCollection;//從資料庫回傳使用者收藏寵物的ID
+        var favorAnimalListObjs = [];
+        
+        var phpBaseUrl;
+        var shelterLinkJsonData;
+        
+        window.onload = function(){
+            var location = window.location.href;
+            phpBaseUrl = location.substring(0,location.lastIndexOf("/")+1);
+            
+            getAdoptionDataFromAPI();
+            setCityChangeListener();
+            setShelterChangeListener();
+            setRecommandBtnOnClickListener();
+            setSaveAsFavorBtnOnClickListener();
+            setDislikeBtnOnClickListener();
+            setAnimalDetailInfoOnClickListener();
+            document.getElementById('bodytypeOption').addEventListener('change',function(){animalBodyType = $('#bodytypeOption option:selected').text();});
+            setOptionClickListener();
+            
+            getShelterLink();
+            setGoToShelterButtonOnclick();
+        }
+        
+        function setCityChangeListener(){
+            document.getElementById('city').addEventListener('change',function(){
+                cityIndex = this.selectedIndex;
+                document.getElementById('shelter').innerHTML = getOptions(shelterArray[cityIndex]);
+
+                selectedShelter = shelterArray[cityIndex][0];
+                console.log("selectedShelter:"+selectedShelter);
+            });
+        }
+        
+        function getOptions(options) {
+            var html = '';
+            for (index in options) {html += '<option>' + options[index] + '</option>'}
+            return html;
+        }
+        
+        function setShelterChangeListener(){
+            document.getElementById('shelter').addEventListener('change',function(){
+                var index = this.selectedIndex;
+                selectedShelter = shelterArray[cityIndex][index];
+            });
+        }
+        
+        //使用者點擊"加入收藏"按鈕
+        function setSaveAsFavorBtnOnClickListener(){
+            //判斷使用者是否登入
+            $('#saveAsFavorBtn').click(function(){
+                if(loginStatus) 
+                {
+                    addFavorAnimalToList(adoptionDataObj[adoptionDataIndex]);
+                    
+                    $.post(phpBaseUrl+'insert_new_collection.php',{user_id:userID,animal_id:adoptionDataObj[adoptionDataIndex].animal_id},function(data,status){
+                        if(status == 'success'){
+                            console.log("php insert echo:"+data);
+                        }
+                    });
+                    
+                    adoptionDataIndex++;
+                    setAnimalImage();
+                }else //提醒使用者登入
+                {
+                    alert("先登入，才能使用收藏功能唷~");
+                }
+            });
+        }
+        
+        //將使用者收藏的動物加到表中
+        function addFavorAnimalToList(favorAnimalObj){
+            var animalPhoto = favorAnimalObj.album_file;
+            var closeButton = '<div id='+favorAnimalObj.animal_id+'><div id="close"><button id="closeImg" type="button" onclick="deleteOnclickAnimalObj('+favorAnimalObj.animal_id+')"><img  src="deleteBtn.png"></button></div>';
+            var favorAnimalPanel = closeButton+'<a onclick=searchOnclickAnimalObj('+favorAnimalObj.animal_id+') style="text-decoration:none;" data-open="viewPetDetail"><table border="1" cellpadding="5" style="border:2px solid;text-align:center;"><tr><td rowspan="2"><img width="80" src='+animalPhoto+'></td><td>動物ID:'+favorAnimalObj.animal_id+'</td></tr><tr><td>動物所在地:'+favorAnimalObj.shelter_name+'</td></tr></table></a></div>';
+            
+            favorAnimalListObjs.push(favorAnimalObj);
+            if(favorAnimalObj['animal_kind'] == '狗'){$('#favorDog').append(favorAnimalPanel);}
+            else if(favorAnimalObj['animal_kind'] == '貓'){$('#favorCat').append(favorAnimalPanel);}
+        }
+        
+        function deleteOnclickAnimalObj(animalID){
+            console.log("delete animal id"+animalID);
+            $.post(phpBaseUrl+'delete_collection.php',{user_id:userID,animal_id:animalID},function(data,status){
+                if(status == 'success'){
+                    console.log("php delete echo:"+data);
+                    $('#'+animalID).remove();
+                }
+            });
+        }
+        
+        //搜尋對應的動物資料並顯示動物詳細資料
+        function searchOnclickAnimalObj(animalID){
+            $.each(favorAnimalListObjs,function(key,objectValue){
+                if(objectValue.animal_id == animalID){
+                    setAnimalDetailInfoPanel(objectValue);
+                    return;
+                }
+            });
+        }
+        
+        //從資料庫載入使用者收藏的動物
+        function loadUserCollectionFromAPI(){
+            var index = 0;
+            if(userCollection.length == 0){
+                clearFavorAnimalPanel();
+                console.log("userCollection is empty!");
+                return;
+            }
+            sendRequestToAPI(index);
+        }
+        
+        function sendRequestToAPI(currentIndex){
+            var parameterStringURL = adoptionDataSourceUrl+'?$filter=animal_id+like+'+userCollection[currentIndex];
+            $.ajax({
+                url: phpBaseUrl+'proxy.php',
+                data:{url:parameterStringURL},
+                method: 'GET'
+            }).done(function(data,textStatus,jqXHR){
+                addFavorAnimalToList(JSON.parse(data)[0]);
+                favorAnimalListObjs.push(JSON.parse(data)[0]);
+                console.log("addFavorAnimalToList:"+data);
+                if(currentIndex < userCollection.length-1){
+                    currentIndex++;
+                    sendRequestToAPI(currentIndex);
+                }
+            });
+        }
+        
+        function clearFavorAnimalPanel(){
+            document.getElementById('favorDog').innerHTML = '';
+            document.getElementById('favorCat').innerHTML = '';
+        }
+        
+        function setRecommandBtnOnClickListener(){$('#recommandBtn').click(function(){getAdoptionDataFromAPI();});}
+        
+        function sendCORSRequest(parameterStringURL){
+            $.ajax({
+                url: phpBaseUrl+'proxy.php',
+                data:{url:parameterStringURL},
+                method: 'GET'
+            }).done(function(data,textStatus,jqXHR){
+                console.log("sendCORSRequest result:"+data);
+                adoptionDataObj = JSON.parse(data);
+                adoptionDataIndex = 0;
+                setAnimalImage();
+            });
+        }
+        
+        function getAdoptionDataFromAPI(){
+            var parameterStringURL = adoptionDataSourceUrl+'?$filter=shelter_name+like+'+selectedShelter;
+            if(animalKind != '全部'){parameterStringURL += '+and+animal_kind+like+'+animalKind;}
+            if(animalBodyType != '全部'){parameterStringURL += '+and+animal_bodytype+like+'+animalBodyType;}
+            if(animalAge != '全部'){ parameterStringURL += '+and+animal_age+like+'+animalAge;}
+            if(animalSex != '全部'){parameterStringURL += '+and+animal_sex+like+'+animalSex;}
+            console.log("request url:"+parameterStringURL);
+            sendCORSRequest(parameterStringURL);
+        }
+        
+        function setAnimalImage(){
+            if(adoptionDataObj[adoptionDataIndex]){
+                var slideImageUrl = adoptionDataObj[adoptionDataIndex].album_file;
+                console.log("img url:",slideImageUrl);
+                testImage(slideImageUrl);
+            }
+            else{
+                alert('查無相關資料,請重新進行推薦');
+            }
+        }
+        
+        function testImage(slideImageUrl) {
+            var tester = new Image();
+            tester.src = slideImageUrl;
+            tester.onload = imageFound;
+            tester.onerror = imageNotFound;
+        }
+        
+        function imageFound() {
+            console.log('That image is found and loaded');
+            this.height = 518;
+            var newOrbitSlide = "<img id='strayPhoto' src='"+this.src+"'>";
+            $('#strayPhoto').replaceWith(newOrbitSlide);
+        }
+        
+        function imageNotFound() {
+            console.log('That image was not found.Next stray amimal!');
+            adoptionDataIndex++;
+            setAnimalImage();
+        }
+        
+        function setDislikeBtnOnClickListener(){
+            $('#dislikeBtn').click(function(){
+                adoptionDataIndex++;
+                setAnimalImage();
+            });
+        }
+        
+        //點擊"查看寵物資料"按鈕
+        function setAnimalDetailInfoOnClickListener(){
+            $('#animalDetailInfo').click(function(){
+                setAnimalDetailInfoPanel(adoptionDataObj[adoptionDataIndex]);
+            });
+        }
+        
+        //設定寵物詳細資料彈出視窗內容
+        function setAnimalDetailInfoPanel(animalObjToDisplay){
+            var shelterName = "<p class='lead' id='shelterName'>收容所名稱:"+animalObjToDisplay.shelter_name+"</p>";
+            $('#shelterName').replaceWith(shelterName);
+            var shelterTel = "<p id='shelterTel'>收容所電話:"+animalObjToDisplay.shelter_tel+"</p>";
+            $('#shelterTel').replaceWith(shelterTel);
+            var shelterAddr ="<p id='shelterAddr'>收容所地址:"+animalObjToDisplay.shelter_address+"</p>";
+            $('#shelterAddr').replaceWith(shelterAddr);
+                
+            var animalID ="<p id='animalID'>動物識別ID:"+animalObjToDisplay.animal_id+"</p>"
+            $('#animalID').replaceWith(animalID);
+            var animalKind ="<p id='animalKind'>動物種類:"+animalObjToDisplay.animal_kind+"</p>"
+            $('#animalKind').replaceWith(animalKind);
+            var animalSex = "<p id='animalSex'>動物性別:"+animalObjToDisplay.animal_sex+"</p>";
+            $('#animalSex').replaceWith(animalSex);
+            var animalSize = "<p id='animalSize'>動物體型:"+animalObjToDisplay.animal_bodytype+"</p>";
+            $('#animalSize').replaceWith(animalSize);
+            var animalColor = "<p id='animalColor'>動物毛色:"+animalObjToDisplay.animal_colour+"</p>";
+            $('#animalColor').replaceWith(animalColor);
+            var animalAge = "<p id='animalAge'>動物年紀:"+animalObjToDisplay.animal_age+"</p>";
+            $('#animalAge').replaceWith(animalAge);
+            var animalStatus = "<p id='animalStatus'>動物認養狀態:"+animalObjToDisplay.animal_status+"</p>";
+            $('#animalStatus').replaceWith(animalStatus);
+            var animalSterilization = "<p id='animalSterilization'>動物絕育:"+animalObjToDisplay.animal_sterilization+"</p>";
+            $('#animalSterilization').replaceWith(animalSterilization);
+                
+            var animalPhoto = "<img id='animalPhoto' src="+animalObjToDisplay.album_file+">";
+            $('#animalPhoto').replaceWith(animalPhoto);
+        }
+        
+        function setOptionClickListener(){
+            $("#animalKindOption li").on("click", function() {
+                $("#animalKindOption li").removeClass("active");
+                $(this).addClass("active");
+                animalKind = $("#animalKindOption .active a").text();// activated tab
+                console.log("animalKind:"+animalKind);
+            });
+            $("#animalAgeOption li").on("click", function() {
+                $("#animalAgeOption li").removeClass("active");
+                $(this).addClass("active");
+                animalAge = $("#animalAgeOption .active a").text();// activated tab
+                console.log("animalAge:"+animalAge);
+            });
+            $("#animalSexOption li").on("click", function() {
+                $("#animalSexOption li").removeClass("active");
+                $(this).addClass("active");
+                animalSex = $("#animalSexOption .active a").text();// activated tab
+                console.log("animalSex:"+animalSex);
+            });
+        }
+        
+        //點擊"前往領養按鈕"
+        function setGoToShelterButtonOnclick(){
+            $('#gotoShelter').click(function(){
+                var shelterName = adoptionDataObj[adoptionDataIndex].shelter_name;
+                window.open(shelterLinkJsonData[shelterName]);
+                
+            });
+        }
+        
+        function getShelterLink(){
+            $.ajax({
+                url: "shelter_link.json",
+                type: "GET",
+                dataType: "json",
+                success: function(Jdata){
+                    shelterLinkJsonData = Jdata;
+                },
+                error:function(){
+                    alert("連結發生錯誤!");
+                }
+            });
+        }
+        
+    </script>
+        
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/vendor/what-input.js"></script>
+    <script src="js/vendor/foundation.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
+
+<script>
+    (function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.10&appId=1427038840747625";
+          fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+
+    window.fbAsyncInit = function(){
+          FB.init({
+            appId      : '{1427038840747625}',
+            cookie     : true,  // enable cookies to allow the server to access 
+            xfbml      : true,  // parse social plugins on this page
+            version    : 'v2.8' // use graph api version 2.8
+          });
+
+          FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+          });
+    };
+
+    var lock = true;
+    function getLoginStatus(){
+        FB.getLoginStatus(function(response) {
+            if(!(loginStatus == true && response.status === 'connected')){   //原本登入時,會因不明原因呼叫兩次getLoginStatus()，                                                                                                                //所以這個if擋掉第二次的呼叫,才不會造成載入兩次資料的問題
+                statusChangeCallback(response);
+            }
+        });
+    }
+
+    function statusChangeCallback(response) {
+            console.log('statusChangeCallback');
+            console.log(response);
+            // The response object is returned with a status field that lets the
+            // app know the current login status of the person.
+            // Full docs on the response object can be found in the documentation
+            // for FB.getLoginStatus().
+            if (response.status === 'connected') {
+              // Logged into your app and Facebook.
+              loginStatus = true;
+              testAPI();
+            } else {
+              // The person is not logged into your app or we are unable to tell.
+              loginStatus = false;
+              userID = '';
+              userCollection = [];
+              loadUserCollectionFromAPI();
+              document.getElementById('status').innerHTML = '您尚未登入!!';
+            }
+    }
+
+    function testAPI() {
+        console.log('Welcome!  Fetching your information.... ');
+        FB.api('me?fields=id,name,picture', function(response) {     //"me?"後面可以設定response回傳資料要有哪些種類
+            console.log('Successful login for: ' + response.name);
+
+            userID = response.id;   
+            console.log("user id :"+userID);
+            $.post(phpBaseUrl+'load_user_collection.php',{user_id:userID},function(data,status){
+                if(status == 'success'){
+                    userCollection = JSON.parse(data);
+                    loadUserCollectionFromAPI();
+                }
+                console.log(status);
+            });  
+
+            document.getElementById('status').innerHTML =
+                  '<img width="40" height="40" src="http://graph.facebook.com/'+response.id+'/picture?type=large">'
+        });
+    }
+</script>

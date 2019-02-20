@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="zh-tw">
+<head>
+<meta name="Generator" content="EditPlus" />
+<meta name="Author" content="男丁格爾's 脫殼玩" />
+<meta name="Keywords" content="" />
+<meta name="Description" content="" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link rel="Shortcut Icon" type="image/x-icon" href="../mainpageImage/favicon.ico" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<title>中間突顯位移式的商品展示</title>
+<style type="text/css">
+	#abgne-gallery-20111224 {
+		position: relative;
+		border: 1px solid #0cf;
+		width: 960px;	/* 整個區塊的寬 */
+		height: 400px;	/* 整個區塊的高 */
+	}
+	#abgne-gallery-20111224 ul {
+		width: 880px;	/* 整個區塊的寬 - 兩個左右鈕的寬 */
+		height: 400px;
+		position: absolute;
+		left: 40px;		/* 一個左鈕的寬 */
+		overflow: hidden;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	#abgne-gallery-20111224 li a {
+		outline: none;
+	}
+	#abgne-gallery-20111224 li a img {
+		vertical-align: middle;
+		border: none;
+	}
+	#abgne-gallery-20111224 .controls {
+		position: absolute;
+		top: 180px;		/* (整個區塊的高 - 自己的高) / 2 */
+		display: block;
+		width: 40px;
+		height: 40px;
+		outline: none;
+		background: url(dogs_image/%E4%B8%B9%E7%AC%AC%E4%B8%81%E8%92%99%E6%A2%97.jpg) no-repeat;
+	}
+	#abgne-gallery-20111224 .previous {
+		left: 0;
+		background-position: -4px 0;
+	}
+	#abgne-gallery-20111224 .next {
+		right: 0;
+		background-position: -49px 0;
+	}
+</style>
+<script type="text/javascript">
+	// 當網頁載完後執行(因為要抓圖片的寬高)
+	$(window).load(function(){
+		// 先取得相關區塊及圖片的寬高
+		// 並先計算出大圖片要垂直置中所需要的 top 值
+		var $gallery = $('#abgne-gallery-20111224'), 
+			$frame = $gallery.find('ul'), 
+			_frameHeight = $frame.height(), 
+			_frameWidth = $frame.width(), 
+			$li = $frame.find('li'), 
+			$img = $li.find('img'), 
+			_imgLength = $img.length, 
+			_imgWidth = $img.width(),
+			_imgHeight = $img.height(),
+			_topDiff = (_frameHeight - _imgHeight) / 2, 
+			_animateSpeed = 200;
+		
+		// 設定每張圖片縮放比例
+		// _totalWidth 用來記錄寬度累加
+		var resizeRatio = [ 0.6, 0.7, 0.8, 1, 0.8, 0.7, 0.6], 
+			liCss = [], 
+			_totalWidth = 0;
+		
+		// 預先算出每張圖片縮放後的總寬度
+		var _m = 0;
+		$img.each(function(i){ 
+			_m += $(this).width() * resizeRatio[i];
+		});
+		// 平均分配要重疊的寬度
+		var _leftDiff = Math.ceil((_m - _frameWidth) / (_imgLength - 1));
+		
+		// 設定每一個 li 的位置及圖片寬高
+		$li.each(function(i){
+			var $this = $(this), 
+				_width = _imgWidth * resizeRatio[i],
+				_height = _imgHeight * resizeRatio[i];
+
+			liCss.push({
+				height: _height, 
+				width: _width, 
+				left: _totalWidth  + (i == _imgLength - 1 ? 1 : 0), 
+				top: _topDiff + (_imgHeight - _height) / 2, 
+				zIndex: resizeRatio[i] * 10
+			});
+
+			$this.css(liCss[liCss.length-1]).css({
+				position: 'absolute',
+				border: '1px solid white'
+			}).data('_index', i).find('img').css({
+				width: '100%', 
+				height: '100%'
+			});
+			
+			_totalWidth += _width - _leftDiff;
+		});
+		
+		// 當滑鼠點擊在 $gallery 中的 .controls 時
+		$gallery.on('click', '.controls', function(){
+			var $button = $(this);
+			
+			// 重新計算每一個 li 的位置及圖片寬高
+			$li.each(function(){
+				var $this = $(this), 
+					_index = $this.data('_index');
+
+				_index = ($button.hasClass('next') ? (_index - 1 + _imgLength) : (_index + 1)) % _imgLength;
+				$this.data('_index', _index);
+
+				$this.stop(false, true).animate(liCss[_index], _animateSpeed);
+			});
+
+			return false;
+		});
+	});
+</script>
+</head>
+
+<body>
+	<div id="abgne-gallery-20111224">
+		<a href="#previous" class="controls previous" rel="previous"></a>
+		<a href="#next" class="controls next" rel="next"></a>
+		<ul>
+			<li><a href="#" title="Slide 1"><img src="dogs_image/%E5%8D%9A%E7%BE%8E%E7%8A%AC.jpg" /></a></li>
+			<li><a href="#" title="Slide 2"><img src="dogs_image/%E5%8D%9A%E7%BE%8E%E7%8A%AC.jpg" /></a></li>
+			<li><a href="#" title="Slide 3"><img src="dogs_image/%E5%8D%9A%E7%BE%8E%E7%8A%AC.jpg" /></a></li>
+			<li><a href="#" title="Slide 4"><img src="dogs_image/%E5%8D%9A%E7%BE%8E%E7%8A%AC.jpg" /></a></li>
+			<li><a href="#" title="Slide 5"><img src="dogs_image/%E5%8D%9A%E7%BE%8E%E7%8A%AC.jpg" /></a></li>
+			<li><a href="#" title="Slide 6"><img src="dogs_image/%E5%8D%9A%E7%BE%8E%E7%8A%AC.jpg" /></a></li>
+			<li><a href="#" title="Slide 7"><img src="dogs_image/%E5%8D%9A%E7%BE%8E%E7%8A%AC.jpg" /></a></li>
+		</ul>
+	</div>
+</body>
+</html>

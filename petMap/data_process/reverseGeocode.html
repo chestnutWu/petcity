@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Reverse Geocoding by Place ID</title>
+      <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  </head>
+  <body>
+
+    <div id="info"></div>
+    <script>
+        var hospitalDataFromDB;
+        var geocoder
+        var index = 0;
+        var timer;
+        var delay = 5000;
+        // Initialize the map.
+        function initMap() {
+            geocoder = new google.maps.Geocoder;
+            getHospitalDataFromDB();
+            timer = setInterval(function(){geocodePlaceId(hospitalDataFromDB);},delay);
+        }
+
+        // This function is called when the user clicks the UI button requesting
+        // a reverse geocode.
+        function geocodePlaceId(hospitalData) {
+            /*if(){
+                
+            }
+            var placeDBId = hospitalData[index].id;*/
+            var placeId = hospitalData[index].place_id;
+            
+            geocoder.geocode({'placeId': placeId}, function(results, status) {
+                if (status === 'OK') {
+                    if (results[0]) {
+                        console.log('index'+index,results[0].geometry.location.lat());
+                        console.log('index'+index,results[0].geometry.location.lng());
+                        sendToDataBase(placeDBId,
+                                       results[0].geometry.location.lng(),
+                                       results[0].geometry.location.lat());
+                    }
+                    else {
+                        console.log('index'+index,'No results found');
+                    }
+                    index++;
+                } else if(status == 'OVER_QUERY_LIMIT'){
+                    console.log('index'+index,'OVER_QUERY_LIMIT');
+                    delay += 200;
+                }else{
+                    $('#info')
+                        .append('index'+index,'Geocode was not successful for the reason :'+status+'<br>');
+                    index ++;
+                }
+            });
+        }
+        
+        function getHospitalDataFromDB(){
+            $.get('/getVetHospitalDataFormDB.php',function(data,status){
+                if(status == 'error'){
+                    alert("Data obtained error!");
+                }
+                else{
+                    hospitalDataFromDB = data;
+                    hospitalDataFromDB = JSON.parse(hospitalDataFromDB);
+                    //console.log("JSONObject1",hospitalDataFromDB[0].place_id);
+                }
+            });
+        }
+        
+        function sendToDataBase(id,lng,lat){
+            $.post('/insertLngLatToDB.php',{id:id,longitude:lng,latitude:lat},function(data,status){
+                if(status == 'success'){
+                    $('#info').append('ID '+id+'後端連結成功<br>');
+                    $('#info').append(data);
+                }
+            }).error(errorResponse);
+        }
+        
+        function errorResponse(){
+            $('#info').append('後端連結失敗<br>');
+        }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC2DVhqvAHRY90cBnp1b3Da7yarJlXuhWU&callback=initMap">
+    </script>
+  </body>
+</html>

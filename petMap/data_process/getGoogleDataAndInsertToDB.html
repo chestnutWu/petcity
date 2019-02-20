@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style type="text/css">
+      html, body { height: 100%; margin: 0; padding: 0; }
+      #map { height: 100%; }
+    </style>
+    <title>抓取Google Data並插入資料庫</title>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+  </head>
+  <body>
+    <div id="info"></div>
+    <script type="text/javascript">
+    var placeService;
+    var index = 0;
+    var timer;
+    var delay = 1000;
+    
+    function init(){
+        $.getJSON("veterinarian_data.json",function(data){
+            placeService = new google.maps.places.PlacesService();
+            timer = setInterval(function(){getGoogleData(data[index]);},delay);
+        });
+    }
+        
+    function getGoogleData(hospitalData){
+        if(typeof(hospitalData)!= 'undefined'){
+            var lng = hospitalData.longitude;
+            var lat = hospitalData.latitude;
+            var markerLocation = new google.maps.LatLng(lng,lat);
+            placeService.textSearch({query:hospitalData.hospitalName,location:markerLocation,radius:'20'}
+                                   ,placesCallback(hospitalData));
+        }
+        else{
+             clearInterval(timer);         
+        }
+    }
+        
+    function placesCallback(placeData){
+        return function(results, status){
+                
+            if(status == google.maps.places.PlacesServiceStatus.OK){
+                //console.log(results);
+                //console.log("找到的獸醫院數量:"+results.length);
+                //console.log("Google Data:"+results[0].name);
+                //console.log("place ID:"+results[0].place_id);
+                //console.log("Open Data:"+placeData.hospitalName);
+                        
+                currentPlaceId = {placeId: results[0].place_id};
+                var request = {placeId: results[0].place_id};
+                placeService.getDetails(request,function(placeResult,status){
+                    if (status == google.maps.places.PlacesServiceStatus.OK) {
+                        refreshSideBar(placeData,placeResult);
+                    }
+                });
+            }
+            else{
+                infoContent+='</div>';
+                console.log("Google資轉換失敗:"+status);
+            }
+        }
+    }
+        
+    function refreshSideBar(dbData,googleData){
+        if(googleData.photos){
+            $('#hospital-picture img').replaceWith('<img    src='+googleData.photos[0].getUrl({'maxWidth':300,'maxHeight':200})+'>');
+        }
+        else{
+            $('#hospital-picture img').replaceWith('<img src=vet_hospital_picture.jpg>');
+        }
+        $('#hospital-name span').replaceWith('<span>'+dbData.hospitalName+'</span>');
+        $('#address span').replaceWith('<span>'+dbData.address+'</span>');
+        $('#telephone span').replaceWith('<span>'+dbData.telephone+'</span>');
+            
+        if(googleData.website){
+            $('#website a').replaceWith('<a target=_blank href='+googleData.website+'>前往店家網頁</a>');
+            $('#website').show();
+        }
+        else{$('#website').hide();}
+            
+        if(googleData.opening_hours){
+            if(googleData.opening_hours.weekday_text){
+                $('#open-hours .dropdown .dropdown-toggle + .dropdown-menu').empty();
+                for(var i=0;i<googleData.opening_hours.weekday_text.length;i++){
+                    $('#open-hours .dropdown .dropdown-toggle + .dropdown-menu')
+                            .append('<li>'+googleData.opening_hours.weekday_text[i]+'</li>');
+                }
+            }
+                
+            if(googleData.opening_hours.open_now){
+                $('#open-now span').replaceWith('<span>店家營業中</span>');
+            }else{$('#open-now span').replaceWith('<span>店家休息中</span>');}
+                
+            $('#open-now').show();
+            $('#open-hours').show();
+        }
+        else{
+            $('#open-now').hide();
+            $('#open-hours').hide();
+        }
+            
+        if(googleData.rating){
+            $('#star span').replaceWith('<span>'+googleData.rating+'</span>');
+            $('#star').show();
+        }
+    }
+        
+    function sendToDataBase(id,lng,lat){
+        $.post('insertGoogleDataToDB.php',{id:id,longitude:lng,latitude:lat},function(data,status){
+                if(status == 'success'){
+                    $('#info').append('後端連結成功<br>');
+                    $('#info').append(data);
+                }
+        }).error(errorResponse);
+    }
+        
+    function errorResponse(){
+        $('#info').append('後端連結失敗<br>');
+    }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDfdp5C728l4qIUCGOTFXIHP-NvdtJHcTQ&callback=init"></script>
+  </body>
+</html>

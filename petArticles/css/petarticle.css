@@ -1,0 +1,149 @@
+#page1{
+  width: 10%;
+  height: 110px;
+  float:left;
+  margin-left: 65px;
+  margin-top: 5px;
+  cursor:pointer;
+}
+
+#page2{
+  width: 10%;
+  height: 100px;
+  float:left;
+  margin-left: 120px;
+  margin-top: 10px;
+  cursor:pointer;
+}
+
+#page3{
+  width: 10%;
+  height: 100px;
+  float:left;
+  margin-left: 80px;
+  margin-top: 10px;
+  cursor:pointer;
+}
+
+#page4{
+  width: 10%;
+  height: 100px;
+  float:left;
+  margin-left: 80px;
+  margin-top: 10px;
+  cursor:pointer;
+}
+
+#page5{
+  width: 10%;
+  height: 100px;
+  float:left;
+  margin-left: 80px;
+  margin-top: 10px;
+  cursor:pointer;
+}
+
+#page6{
+  width: 10%;
+  height: 100px;
+  float:left;
+  margin-left: 80px;
+  margin-top: 10px;
+  cursor:pointer;
+}
+
+#label{
+
+  width:200px;
+  float:left;
+  margin-left: 20px;
+  margin-top: 60px;
+}
+
+#label1{
+
+  margin-bottom: 30px;
+  cursor:pointer;
+}
+
+#label2{
+
+  cursor:pointer;
+}
+
+#rightPart{
+  
+  background: url("../寵物文章元件/文章列表.svg");
+  background-size: contain;
+  background-repeat: no-repeat;*/
+  width:520px;
+  float:left;
+  margin-left: 20px;
+}
+
+#vis{
+
+  background: url("../寵物文章元件/18.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+#tag{
+   
+  background: url("../寵物文章元件/黑板.svg");
+  background-size: 700px 500px;
+  background-repeat: no-repeat;
+  float:left;
+}
+
+#popularArticle{
+
+  margin-left: 100px;
+  float:left;
+}
+
+#keywordArticle{
+
+  margin-top: 20px;
+  float:left;
+}
+
+#articlelist{
+
+  margin-top: 28px;
+  margin-left: 48px;
+  font-family: Microsoft YaHei, "微軟雅黑體", Microsoft JhengHei,"微軟正黑體";
+
+}
+
+#pagination{
+  margin-left: 65px;
+  margin-top: 18px;
+  font-family: Microsoft JhengHei,"微軟正黑體";
+}
+
+.list-group-item-text {
+  width: 400px; 
+  overflow: hidden; 
+  white-space: nowrap; 
+  text-overflow: ellipsis; 
+}
+
+body{
+
+  background-image: url("../寵物文章元件/11_1.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+
+}
+
+header{
+
+  background-image: url("../寵物文章元件/13.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height:120px;
+
+}

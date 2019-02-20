@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>PetCity寵物文章</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<script type="text/javascript" src="https://maxcdn.bootstrap.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/bubble_chart.css">
+<link rel=stylesheet type="text/css" href="css/petarticle.css">
+<link href="../hover.css" rel="stylesheet">
+<link rel="Shortcut Icon" type="image/x-icon" href="../mainpageImage/favicon.ico" />
+
+</head>
+<body id="me">
+    
+            <header id = "header">
+                    <a href="../index.htm"><img id = "page1" src="../images/logo.svg" ></a>
+                    <a href="../petMap/veterinary_hospital_page.html"><img id = "page2" src="../images/pet_map.svg" class="hvr-grow"></a>
+                    <a href="../petArticles/index.html"><img id = "page3" src="../images/pet_articles.svg" class="hvr-grow" ></a>
+                    <a href="../petRecommend/test.HTML"><img id = "page4" src="../images/pet_recommend.svg" class="hvr-grow"></a>
+                    <a href="../petAdoption/pet_adoption_page.html"><img id = "page5" src="../images/pet_adoption.svg" class="hvr-grow" ></a>
+                    <a href="../petRecognition/DogRecWeb.html"><img id = "page6" src="../images/pet_recognition.svg" class="hvr-grow" ></a>
+            </header>
+    
+  <div id="label">
+      <img id = "label1" src="寵物文章元件/8.svg" class="hvr-rotate" width=200 onclick="showPopularAticle()">
+      <img id = "label2" src="寵物文章元件/9.svg" class="hvr-rotate" width=200 onclick="showKeywordAticle()">
+  </div>
+    
+  <div id = "popularArticle" class="container" style="display:block;">
+    <div id="toolbar">
+      <text>分類:</text>
+      <a href="#" id="all" class="button active">全部文章</a>
+      <a href="#" id="year" class="button">依文章性質</a>
+    </div>
+    <div id="icontip">
+      <p align="right"><text><span id="likesicon" class="glyphicon glyphicon-thumbs-up" data-toggle="tooltip" data-placement="top" title="讚數"></span> :</text><text style="color: #2894FF" >&nbsp;◉</text><text>&lt;100</text><text style="color: #00BB00">&nbsp;&nbsp;◉</text><text>100~999</text><text style="color: #ff5151">&nbsp;&nbsp;◉</text><text>&gt;1000</text></p>
+    </div>
+    <div id="vis"></div>
+    </div>
+  <div id="keywordArticle" style=" display:none;">
+  <div id="tag"
+    style="width: 700px; height: 500px; "></div>
+  <div id="rightPart" style="width: 520px; height: 500px; ">
+    <div id ="articlelist" class="list-group" style="width: 420px; height: 430px; ">
+    </div>
+      <ul id = "pagination" class="pagination pagination-sm" ></ul>
+  </div>
+  </div>
+    
+  <script src="//d3js.org/d3.v3.min.js"></script>
+  <script src="js/tooltip.js"></script>
+  <script src="js/bubble_chart.js"></script>
+  <script src="js/d3.layout.cloud.js"></script>
+  <script src="js/cloud.js"></script>
+  <script type="text/javascript">
+    function showPopularAticle(){
+      document.getElementById("popularArticle").style.display = "block";
+      document.getElementById("keywordArticle").style.display = "none";
+      document.body.style.backgroundImage = null;
+      document.body.style.backgroundImage = "url('寵物文章元件/11_1.svg')";
+    }
+    function showKeywordAticle(){
+      document.getElementById("popularArticle").style.display = "none";
+      document.getElementById("keywordArticle").style.display = "block";
+      document.body.style.backgroundImage = null;
+      document.body.style.backgroundImage = "url('寵物文章元件/11.svg')";
+    }
+    $(function () { $('[data-toggle="tooltip" ]').tooltip() })
+    $('#likesicon').tooltip('show')
+  </script>
+  
+</body>
+</html>
